@@ -64,42 +64,42 @@ public class Application {
                 );
     
                 System.out.println(newAccount);
-//                accountRepository.save(newAccount);
+                accountRepository.save(newAccount);
                 newAccount.setUserProfile(newUser);
-//                accountRepository.save(newAccount);
+                accountRepository.save(newAccount);
 //                userRepository.save(newUser);
 
                 System.out.println(newAccount);
 
-                for (int x = 0; x < 3; x++) {
-                    firstName = faker.name().firstName();
-                    lastName = faker.name().lastName();
-                    id = UUID.randomUUID();
-                    num1 = rand.nextInt (900) + 100;
-                    num2 = rand.nextInt (643) + 100;
-                    num3 = rand.nextInt (9000) + 1000;
-                    phoneNumber = num1.toString() + num2.toString() + num3.toString();
+//                for (int x = 0; x < 3; x++) {
+//                    firstName = faker.name().firstName();
+//                    lastName = faker.name().lastName();
+//                    id = UUID.randomUUID();
+//                    num1 = rand.nextInt (900) + 100;
+//                    num2 = rand.nextInt (643) + 100;
+//                    num3 = rand.nextInt (9000) + 1000;
+//                    phoneNumber = num1.toString() + num2.toString() + num3.toString();
+////
+//                    Friend newFriend = new Friend (
+//                            id,
+//                            firstName,
+//                            lastName,
+//                            phoneNumber,
+//                            OffsetDateTime.now()
+//                    );
 //
-                    Friend newFriend = new Friend (
-                            id,
-                            firstName,
-                            lastName,
-                            phoneNumber,
-                            OffsetDateTime.now()
-                    );
-
-                    System.out.println(newFriend);
-//                    friendRepository.save(newFriend);
-                    newFriend.setUserAccount(newAccount);
-//                    newAccount.addFriend(newFriend);
 //                    System.out.println(newFriend);
-                    friendRepository.save(newFriend);
-//                    userRepository.save(newUser);
-//                    accountRepository.save(newAccount);
-                }
-
-
-//                accountRepository.save(newAccount);
+////                    friendRepository.save(newFriend);
+//                    newFriend.setUserAccount(newAccount);
+////                    newAccount.addFriend(newFriend);
+////                    System.out.println(newFriend);
+//                    friendRepository.save(newFriend);
+////                    userRepository.save(newUser);
+////                    accountRepository.save(newAccount);
+//                }
+//
+//
+////                accountRepository.save(newAccount);
 
             }
 
