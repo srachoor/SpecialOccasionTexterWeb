@@ -29,8 +29,8 @@ public class Application {
         return args -> {
             Faker faker = new Faker();
 
-//            Random rand = new Random();
-//            Integer num1, num2, num3;
+            Random rand = new Random();
+            Integer num1, num2, num3;
 
 //            for (int i = 0; i < 50; i++) {
 //                String firstName = faker.name().firstName();
