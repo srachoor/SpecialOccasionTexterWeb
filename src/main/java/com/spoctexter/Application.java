@@ -29,47 +29,47 @@ public class Application {
         return args -> {
             Faker faker = new Faker();
 
-            Random rand = new Random();
-            Integer num1, num2, num3;
+//            Random rand = new Random();
+//            Integer num1, num2, num3;
 
-            for (int i = 0; i < 50; i++) {
-                String firstName = faker.name().firstName();
-                String lastName = faker.name().lastName();
-                String email = (firstName +"."+lastName+"@spoctexter.com");
-                UUID id = UUID.randomUUID();
-                num1 = rand.nextInt (900) + 100;
-                num2 = rand.nextInt (643) + 100;
-                num3 = rand.nextInt (9000) + 1000;
-                String phoneNumber = num1.toString() + num2.toString() + num3.toString();
-
-                String username = firstName.substring(0,1) + lastName;
-                String password = "randompassword";
-
-                User_profile newUser = new User_profile(
-                        id,
-                        firstName,
-                        lastName,
-                        email,
-                        phoneNumber,
-                        OffsetDateTime.now()
-                );
-
-//                userRepository.save(newUser);
-
-                UserAccount newAccount = new UserAccount(
-                        username,
-                        password,
-                        OffsetDateTime.now()
-                        //newUser
-                );
-    
-                System.out.println(newAccount);
-                accountRepository.save(newAccount);
-                newAccount.setUserProfile(newUser);
-                accountRepository.save(newAccount);
-//                userRepository.save(newUser);
-
-                System.out.println(newAccount);
+//            for (int i = 0; i < 50; i++) {
+//                String firstName = faker.name().firstName();
+//                String lastName = faker.name().lastName();
+//                String email = (firstName +"."+lastName+"@spoctexter.com");
+//                UUID id = UUID.randomUUID();
+//                num1 = rand.nextInt (900) + 100;
+//                num2 = rand.nextInt (643) + 100;
+//                num3 = rand.nextInt (9000) + 1000;
+//                String phoneNumber = num1.toString() + num2.toString() + num3.toString();
+//
+//                String username = firstName.substring(0,1) + lastName;
+//                String password = "randompassword";
+//
+//                User_profile newUser = new User_profile(
+//                        id,
+//                        firstName,
+//                        lastName,
+//                        email,
+//                        phoneNumber,
+//                        OffsetDateTime.now()
+//                );
+//
+////                userRepository.save(newUser);
+//
+//                UserAccount newAccount = new UserAccount(
+//                        username,
+//                        password,
+//                        OffsetDateTime.now()
+//                        //newUser
+//                );
+//
+//                System.out.println(newAccount);
+//                accountRepository.save(newAccount);
+//                newAccount.setUserProfile(newUser);
+//                accountRepository.save(newAccount);
+////                userRepository.save(newUser);
+//
+//                System.out.println(newAccount);
 
 //                for (int x = 0; x < 3; x++) {
 //                    firstName = faker.name().firstName();
@@ -101,7 +101,7 @@ public class Application {
 //
 ////                accountRepository.save(newAccount);
 
-            }
+//            }
 
 
 
