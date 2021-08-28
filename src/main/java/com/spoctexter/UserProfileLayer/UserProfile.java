@@ -7,34 +7,13 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Entity (name = "User_profile")  //this Entity name gets referenced in our JPQL queries
-@Table (
-        name = "user_profile",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "user_email_unique",columnNames = "email"),
-                @UniqueConstraint(name = "user_phone_number_unique", columnNames = "phone_number")}
-)
-public class User_profile {
+@Entity (name = "UserProfile")  //this Entity name gets referenced in our JPQL queries
+@Table
+public class UserProfile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id",updatable = false, nullable = false)
+    @Column(unique = true, updatable = false, nullable = false)
     private UUID id;
-
-    @Column(name =  "first_name", nullable = false, columnDefinition = "TEXT")
-    private String firstName;
-
-    @Column(name = "last_name", nullable = true, columnDefinition = "TEXT")
-    private String lastName;
-
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
-    private String email;
-
-    @Column(name = "phone_number", nullable = false, columnDefinition = "TEXT")
-    private String phoneNumber;
-
-    @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createdAt;
 
     @OneToOne (
             mappedBy = "userProfile",
@@ -42,12 +21,27 @@ public class User_profile {
     )
     private UserAccount userAccount;
 
-    public User_profile(UUID id,
-                        String firstName,
-                        String lastName,
-                        String email,
-                        String phoneNumber,
-                        OffsetDateTime createdAt) {
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = true)
+    private String lastName;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(unique = true, nullable = false)
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private OffsetDateTime createdAt;
+
+    public UserProfile(UUID id,
+                       String firstName,
+                       String lastName,
+                       String email,
+                       String phoneNumber,
+                       OffsetDateTime createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,7 +50,17 @@ public class User_profile {
         this.createdAt = createdAt;
     }
 
-    public User_profile() {
+    public UserProfile(UUID id, String firstName, String lastName, String email, String phoneNumber, OffsetDateTime createdAt, UserAccount userAccount) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.createdAt = createdAt;
+        this.userAccount = userAccount;
+    }
+
+    public UserProfile() {
     }
 
     public UUID getId() {
@@ -109,13 +113,14 @@ public class User_profile {
 
     @Override
     public String toString() {
-        return "User_profile{" +
+        return "UserProfile{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", createdAt=" + createdAt +
+                ", userAccount=" + userAccount +
                 '}';
     }
 }

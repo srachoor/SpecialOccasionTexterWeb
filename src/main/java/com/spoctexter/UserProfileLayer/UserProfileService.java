@@ -1,7 +1,5 @@
 package com.spoctexter.UserProfileLayer;
 
-import com.spoctexter.UserProfileLayer.User_profile;
-import com.spoctexter.UserProfileLayer.User_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +11,17 @@ import java.util.UUID;
 @Service
 class UserProfileService {
 
-    private final User_repository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserProfileService(User_repository userRepository) {
+    public UserProfileService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<User_profile> getUserProfiles() { return userRepository.findAll(); }
+    public List<UserProfile> getUserProfiles() { return userRepository.findAll(); }
 
-    public void addNewUserProfile(User_profile userProfile) {
-        Optional<User_profile> userOptional = userRepository
+    public void addNewUserProfile(UserProfile userProfile) {
+        Optional<UserProfile> userOptional = userRepository
                 .findUserProfileByEmail(userProfile.getEmail());
 
         if(userOptional.isPresent()) {
@@ -33,7 +31,7 @@ class UserProfileService {
     }
 
     public void deleteUserProfileByID(UUID id) {
-        Optional<User_profile> userOptional = userRepository
+        Optional<UserProfile> userOptional = userRepository
                 .findById(id);
         if(userOptional.isPresent()) {
             userRepository.deleteById(id);
@@ -42,7 +40,7 @@ class UserProfileService {
     }
 
     public void deleteUserProfileByEmail(String email) {
-        Optional<User_profile> userOptional = userRepository
+        Optional<UserProfile> userOptional = userRepository
                 .findUserProfileByEmail(email);
         if(userOptional.isPresent()) {
             userRepository.deleteById(userOptional.get().getId());
@@ -51,7 +49,7 @@ class UserProfileService {
     }
 
     public void deleteUserProfileByPhoneNumber(String phoneNumber) {
-        Optional<User_profile> userOptional = userRepository
+        Optional<UserProfile> userOptional = userRepository
                 .findUserProfileByPhoneNumber(phoneNumber);
         if(userOptional.isPresent()) {
             userRepository.deleteById(userOptional.get().getId());
@@ -62,13 +60,13 @@ class UserProfileService {
     @Transactional
     public void updateUserProfileEmail(String email, String newEmail) {
         if(newEmail == null) { throw new IllegalStateException("Please enter a valid email address."); }
-        Optional<User_profile> currentUserOptional = userRepository
+        Optional<UserProfile> currentUserOptional = userRepository
                 .findUserProfileByEmail(email);
         if(!currentUserOptional.isPresent()) {
             throw new IllegalStateException("Sorry, we could not find your email.");
         }
         else {
-            Optional <User_profile> conflictUser = userRepository
+            Optional <UserProfile> conflictUser = userRepository
                     .findUserProfileByEmail(newEmail);
             if(conflictUser.isPresent()) {
                throw new IllegalStateException("Sorry, your new email is already taken.");
@@ -83,13 +81,13 @@ class UserProfileService {
     @Transactional
     public void updateUserProfilePhoneNumber(String phoneNumber, String newPhoneNumber) {
         if(newPhoneNumber == null || newPhoneNumber.length() < 10) { throw new IllegalStateException("Please enter a valid phoneNumber."); }
-        Optional<User_profile> currentUserOptional = userRepository
+        Optional<UserProfile> currentUserOptional = userRepository
                 .findUserProfileByPhoneNumber(phoneNumber);
         if(!currentUserOptional.isPresent()) {
             throw new IllegalStateException("Sorry, we could not find your account based on the phone number you entered.");
         }
         else {
-            Optional <User_profile> conflictUser = userRepository
+            Optional <UserProfile> conflictUser = userRepository
                     .findUserProfileByPhoneNumber(newPhoneNumber);
             if(conflictUser.isPresent()) {
                 throw new IllegalStateException("Sorry, your new phone number is already taken.");

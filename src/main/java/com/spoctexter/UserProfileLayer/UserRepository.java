@@ -8,12 +8,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface User_repository extends JpaRepository<User_profile, UUID> {
+public interface UserRepository extends JpaRepository<UserProfile, UUID> {
 
     @Query(value = "SELECT * FROM user_profile WHERE email = ?1", nativeQuery = true)  // native query example -- PSQL
-    Optional<User_profile> findUserProfileByEmail(String email);
+    Optional<UserProfile> findUserProfileByEmail(String email);
 
-    @Query("SELECT s FROM User_profile s WHERE s.phoneNumber = ?1") // JPQL -- Java Persistence Query Language example
-    Optional<User_profile> findUserProfileByPhoneNumber(String phone_number);
+    @Query("SELECT s FROM UserProfile s WHERE s.phoneNumber = ?1") // JPQL -- Java Persistence Query Language example
+    Optional<UserProfile> findUserProfileByPhoneNumber(String phone_number);
 
 }
