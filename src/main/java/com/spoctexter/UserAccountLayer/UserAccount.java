@@ -36,16 +36,16 @@ public class UserAccount {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-//    @OneToMany(
-//            mappedBy = "userAccount",
-//            orphanRemoval = true,
-//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
-//    )
+    @OneToMany(
+            mappedBy = "userAccount",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
 //    @JoinColumn(
 //            name = "user_account_id",
 //            referencedColumnName = "user_profile_id"
 //    )
-//    private List<Friend> friends = new ArrayList<>();
+    private List<Friend> friends = new ArrayList<>();
 
     public UserAccount(String userName, String userPassword, OffsetDateTime createdAt, UserProfile userProfile) {
         this.userName = userName;
@@ -103,18 +103,19 @@ public class UserAccount {
         this.createdAt = createdAt;
     }
 
-//    public void addFriend(Friend friend) {
-//        if (!this.friends.contains(friend)) {
-//            this.friends.add(friend);
-//            friend.setUserAccount(this);
-//        }
-//    }
-//
-//    public void removeFriend(Friend friend) {
-//        if (this.friends.contains(friend)) {
-//            this.friends.remove(friend);
-//            friend.setUserAccount(null);
-//        }
+    public void addFriend(Friend friend) {
+        if (!this.friends.contains(friend)) {
+            this.friends.add(friend);
+            friend.setUserAccount(this);
+        }
+    }
+
+    public void removeFriend(Friend friend) {
+        if (this.friends.contains(friend)) {
+            this.friends.remove(friend);
+            friend.setUserAccount(null);
+        }
+    }
 
     @Override
     public String toString() {
@@ -126,6 +127,5 @@ public class UserAccount {
                 ", userProfile=" + userProfile +
                 '}';
     }
-//    }
 
 }

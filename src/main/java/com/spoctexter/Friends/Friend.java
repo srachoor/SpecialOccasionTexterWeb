@@ -7,30 +7,24 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity (name = "Friend")
-@Table (
-        name = "friend",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "friend_phone_number_unique", columnNames = "friend_phone_number")
-        }
-)
+@Entity (name = "Friend") //this Entity name gets referenced in our JPQL queries
+@Table
 public class Friend {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id",updatable = false, nullable = false)
+    @Column(unique = true, updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "friend_first_name", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String friendFirstName;
 
-    @Column(name = "friend_last_name", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String friendLastName;
 
-    @Column(name = "friend_phone_number", nullable = false, columnDefinition = "TEXT")
+    @Column(unique = true, nullable = false)
     private String friendPhoneNumber;
 
-    @Column(name = "friend_DOB", nullable = true, columnDefinition = "DATE")
+    @Column(nullable = true)
     private OffsetDateTime friendDOB;
 
     @ManyToOne
@@ -39,20 +33,13 @@ public class Friend {
             nullable = false,
             referencedColumnName = "id",
             foreignKey = @ForeignKey (
-                    name = "user_profile_id_fk_in_friend"
+                    name = "user_profile_id_fk"
             )
     )
     UserAccount userAccount;
 
     public Friend(UUID id, String friendFirstName, String friendLastName, String friendPhoneNumber, OffsetDateTime friendDOB) {
         this.id = id;
-        this.friendFirstName = friendFirstName;
-        this.friendLastName = friendLastName;
-        this.friendPhoneNumber = friendPhoneNumber;
-        this.friendDOB = friendDOB;
-    }
-
-    public Friend(String friendFirstName, String friendLastName, String friendPhoneNumber, OffsetDateTime friendDOB) {
         this.friendFirstName = friendFirstName;
         this.friendLastName = friendLastName;
         this.friendPhoneNumber = friendPhoneNumber;

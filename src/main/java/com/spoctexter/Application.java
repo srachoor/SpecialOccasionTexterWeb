@@ -1,5 +1,6 @@
 package com.spoctexter;
 
+import com.spoctexter.Friends.Friend;
 import com.spoctexter.Friends.FriendRepository;
 import com.spoctexter.UserAccountLayer.UserAccount;
 import com.spoctexter.UserAccountLayer.UserAccountRepository;
@@ -59,6 +60,24 @@ public class Application {
                     "randompassword",
                     OffsetDateTime.now(),
                     user
+            );
+
+            userAccount.addFriend(new Friend(
+                    UUID.randomUUID(),
+                    "Sai",
+                    "Rachoor",
+                    "8564269229",
+                    OffsetDateTime.now()
+                    )
+            );
+
+            userAccount.addFriend(new Friend(
+                            UUID.randomUUID(),
+                            "Shilpa",
+                            "Sethuraman",
+                            "9724007496",
+                            OffsetDateTime.now()
+                    )
             );
 
             accountRepository.save(userAccount);
