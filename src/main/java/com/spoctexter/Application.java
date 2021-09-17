@@ -2,6 +2,8 @@ package com.spoctexter;
 
 import com.spoctexter.Friends.Friend;
 import com.spoctexter.Friends.FriendRepository;
+import com.spoctexter.Occasions.Occasion;
+import com.spoctexter.Occasions.OccasionRepository;
 import com.spoctexter.UserAccountLayer.UserAccount;
 import com.spoctexter.UserAccountLayer.UserAccountRepository;
 import com.spoctexter.UserProfileLayer.UserProfile;
@@ -27,7 +29,8 @@ public class Application {
     CommandLineRunner commandLineRunner(
             UserRepository userRepository,
             UserAccountRepository accountRepository,
-            FriendRepository friendRepository) {
+            FriendRepository friendRepository,
+            OccasionRepository occasionRepository) {
 
         return args -> {
             Faker faker = new Faker();
@@ -53,8 +56,6 @@ public class Application {
                     OffsetDateTime.now()
             );
 
-//            userRepository.save(user);
-
             UserAccount userAccount =  new UserAccount(
                     username,
                     "randompassword",
@@ -62,23 +63,21 @@ public class Application {
                     user
             );
 
-            userAccount.addFriend(new Friend(
-                    UUID.randomUUID(),
-                    "Sai",
-                    "Rachoor",
-                    "8564269229",
-                    OffsetDateTime.now()
-                    )
-            );
+//            accountRepository.save(userAccount);
 
-            userAccount.addFriend(new Friend(
-                            UUID.randomUUID(),
-                            "Shilpa",
-                            "Sethuraman",
-                            "9724007496",
-                            OffsetDateTime.now()
-                    )
-            );
+            Friend Sai = new Friend (UUID.randomUUID(),"Sai","Rachoor","8564269229",OffsetDateTime.now());
+            userAccount.addFriend(Sai);
+
+//            friendRepository.save(Sai);
+
+            Occasion saiBirthday = new Occasion("Sai's Birthday",OffsetDateTime.now().minusYears(32));
+            Occasion saiAnniversary = new Occasion("Sai's Anniversary", OffsetDateTime.now());
+
+            Sai.addOccasion(saiBirthday);
+            Sai.addOccasion(saiAnniversary);
+
+//            occasionRepository.save(saiBirthday);
+//            occasionRepository.save(saiAnniversary);
 
             accountRepository.save(userAccount);
 

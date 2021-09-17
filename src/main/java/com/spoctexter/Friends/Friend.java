@@ -1,10 +1,13 @@
 package com.spoctexter.Friends;
 
+import com.spoctexter.Occasions.Occasion;
 import com.spoctexter.UserAccountLayer.UserAccount;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity (name = "Friend") //this Entity name gets referenced in our JPQL queries
@@ -37,6 +40,13 @@ public class Friend {
             )
     )
     UserAccount userAccount;
+
+    @OneToMany(
+            mappedBy = "friend",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    private List<Occasion> occasions  = new ArrayList<>();
 
     public Friend(UUID id, String friendFirstName, String friendLastName, String friendPhoneNumber, OffsetDateTime friendDOB) {
         this.id = id;
@@ -103,6 +113,20 @@ public class Friend {
 
     public void setUserAccount(UserAccount userAccount) {
         this.userAccount = userAccount;
+    }
+
+    public void addOccasion(Occasion occasion) {
+        if (!this.occasions.contains(occasion)) {
+            this.occasions.add(occasion);
+            occasion.setFriend(this);
+        }
+    }
+
+    public void removeOccasion(Occasion occasion) {
+        if (this.occasions.contains(occasion)) {
+            this.occasions.remove(occasion);
+            occasion.setFriend(null);
+        }
     }
 
     @Override

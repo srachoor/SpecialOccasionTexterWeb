@@ -41,10 +41,6 @@ public class UserAccount {
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
-//    @JoinColumn(
-//            name = "user_account_id",
-//            referencedColumnName = "user_profile_id"
-//    )
     private List<Friend> friends = new ArrayList<>();
 
     public UserAccount(String userName, String userPassword, OffsetDateTime createdAt, UserProfile userProfile) {

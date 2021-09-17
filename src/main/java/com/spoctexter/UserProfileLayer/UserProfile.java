@@ -111,6 +111,14 @@ public class UserProfile {
         this.createdAt = createdAt;
     }
 
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
     @Override
     public String toString() {
         return "UserProfile{" +
