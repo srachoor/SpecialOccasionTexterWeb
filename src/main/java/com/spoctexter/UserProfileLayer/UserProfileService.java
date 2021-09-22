@@ -27,6 +27,15 @@ class UserProfileService {
         if(userOptional.isPresent()) {
             throw new IllegalStateException("Email Taken");
         }
+
+        else if(!userOptional.isPresent()) {
+            userOptional = userRepository.findUserProfileByPhoneNumber(userProfile.getPhoneNumber());
+        }
+
+        if (userOptional.isPresent()) {
+            throw new IllegalStateException("Phone Number Taken");
+        }
+
         userRepository.save(userProfile);
     }
 
