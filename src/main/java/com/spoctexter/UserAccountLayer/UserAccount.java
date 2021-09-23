@@ -1,5 +1,6 @@
 package com.spoctexter.UserAccountLayer;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spoctexter.Friends.Friend;
 import com.spoctexter.UserProfileLayer.UserProfile;
 
@@ -19,6 +20,7 @@ public class UserAccount {
     @Column(unique = true, updatable = false, nullable = false)
     private UUID id;
 
+    @JsonManagedReference
     @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER

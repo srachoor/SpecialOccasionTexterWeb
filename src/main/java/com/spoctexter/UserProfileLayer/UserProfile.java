@@ -1,5 +1,6 @@
 package com.spoctexter.UserProfileLayer;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spoctexter.UserAccountLayer.UserAccount;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class UserProfile {
     @Column(unique = true, updatable = false, nullable = false)
     private UUID id;
 
+    @JsonBackReference
     @OneToOne (
             mappedBy = "userProfile",
             orphanRemoval = true
@@ -33,7 +35,7 @@ public class UserProfile {
     @Column(unique = true, nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private OffsetDateTime createdAt;
 
     public UserProfile(UUID id,
@@ -58,6 +60,14 @@ public class UserProfile {
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
         this.userAccount = userAccount;
+    }
+
+    public UserProfile(UserAccount userAccount, String firstName, String lastName, String email, String phoneNumber) {
+        this.userAccount = userAccount;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public UserProfile() {
