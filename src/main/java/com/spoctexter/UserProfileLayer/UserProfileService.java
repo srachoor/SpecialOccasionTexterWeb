@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.regex.*;
 
 @Service
-class UserProfileService {
+public class UserProfileService {
 
     private final UserRepository userRepository;
 

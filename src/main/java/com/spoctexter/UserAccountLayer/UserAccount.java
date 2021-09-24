@@ -58,6 +58,11 @@ public class UserAccount {
         this.createdAt = createdAt;
     }
 
+    public UserAccount(String userName, String userPassword) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+    }
+
     public UserAccount() {
     }
 

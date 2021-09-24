@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "api/v1/spoc")
+@RequestMapping(path = "api/v1/spoc/profile")
 public class UserController {
 
     private final UserProfileService userService;
@@ -22,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(path = "addUser/") //Another way to add a user profile
+    @PostMapping(path = "addUser") //Another way to add a user profile
     public void addUserProfile(
             @RequestParam(name = "firstName") String firstName,
             @RequestParam(name = "lastName") String lastName,
