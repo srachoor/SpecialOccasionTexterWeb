@@ -27,32 +27,21 @@ public class UserProfileService {
     public List<UserProfile> getUserProfiles() { return userRepository.findAll(); }
 
     public void addNewUserProfile(UserProfile userProfile) {
-        Optional<UserProfile> userOptional = userRepository
-                .findUserProfileByEmail(userProfile.getEmail());
+        UserProfile conflictUserEmail = inputValidator.checkEmailConflict(userProfile.getEmail(),userRepository);
+        UserProfile conflictUserPhone = inputValidator.checkPhoneConflict(userProfile.getPhoneNumber(),userRepository);
 
-        if (userOptional.isPresent()) {
-            throw new NamingConflictException("Email is already registered to another user.");
+        if (conflictUserPhone == null && conflictUserEmail == null) {
+            userRepository.save(userProfile);
         }
-
-        else if (!userOptional.isPresent()) {
-            userOptional = userRepository
-                    .findUserProfileByPhoneNumber(userProfile
-                            .getPhoneNumber());
+        else if (conflictUserPhone != null && conflictUserEmail == null){
+            throw new NamingConflictException("Phone number " + userProfile.getPhoneNumber() + " is already registered to another user.");
         }
-
-        if (userOptional.isPresent()) {
-            throw new NamingConflictException("Phone number is already registered to another user.");
+        else if (conflictUserPhone == null && conflictUserEmail != null){
+            throw new NamingConflictException("Email " + userProfile.getEmail() + " is already registered to another user.");
         }
-
-        if (!inputValidator.isValidPhone(userProfile.getPhoneNumber())){
-            throw new BadInputException("Please enter a valid phone number.");
+        else {
+            throw new NamingConflictException("Email " + userProfile.getEmail() + " and phone number " + userProfile.getPhoneNumber() + " are both already registered to another user");
         }
-
-        if (!inputValidator.isValidEmail(userProfile.getEmail())) {
-            throw new BadInputException("Please enter a valid email address.");
-        }
-
-        userRepository.save(userProfile);
     }
 
     public UserProfile getUserProfileByID(UUID id) {
