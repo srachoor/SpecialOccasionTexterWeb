@@ -1,19 +1,26 @@
 package com.spoctexter.UserAccountLayer;
 
-import org.apache.catalina.User;
+
+import com.spoctexter.UserProfileLayer.UserProfile;
+import com.spoctexter.UserProfileLayer.UserRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
+    private final UserRepository userProfileRepository;
 
     @Autowired
-    public UserAccountService(UserAccountRepository userAccountRepository) {
+    public UserAccountService(UserAccountRepository userAccountRepository,
+                              UserRepository userProfileRepository) {
         this.userAccountRepository = userAccountRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     public void addNewUserAccount(UserAccount userAccount) {
@@ -28,6 +35,59 @@ public class UserAccountService {
             userAccountRepository.save(userAccount);
         }
 
+    }
+
+    public UserAccount getUserAccountByEmail(String email) {
+        Optional <UserProfile> userProfileOptional = userProfileRepository
+                .findUserProfileByEmail(email);
+
+        if (userProfileOptional.isPresent()) {
+            return userProfileOptional.get().getUserAccount();
+        }
+        else{
+            throw new IllegalStateException("Email not associated with an account.");
+        }
+
+    }
+
+    public UserAccount getUserAccountByPhoneNumber(String phoneNumber) {
+        Optional <UserProfile> userProfileOptional = userProfileRepository
+                .findUserProfileByPhoneNumber(phoneNumber);
+
+        if (userProfileOptional.isPresent()) {
+            return userProfileOptional.get().getUserAccount();
+        }
+        else{
+            throw new IllegalStateException("Phone number not associated with an account.");
+        }
+
+    }
+
+    public UserAccount getUserAccountByUserName(String userName) {
+        Optional <UserAccount> userAccountOptional = userAccountRepository.findUserAccountByUserName(userName);
+
+        if (userAccountOptional.isPresent()) {
+            return userAccountOptional.get();
+        }
+        else{
+            throw new IllegalStateException("Username not associated with an account.");
+        }
+
+    }
+
+    public Boolean validatePassword(String userName, String password) {
+        System.out.println(getUserAccountByUserName(userName).getUserPassword());
+        System.out.println(password);
+
+        if (password.equals(getUserAccountByUserName(userName).getUserPassword())) {
+            System.out.println("true, they match");
+            return true;
+        }
+        else {
+            System.out.println("false, they don't match");
+            return false;
+
+        }
     }
 
 }

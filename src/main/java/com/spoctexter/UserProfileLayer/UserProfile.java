@@ -1,9 +1,12 @@
 package com.spoctexter.UserProfileLayer;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.UserAccountLayer.UserAccount;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -26,7 +29,7 @@ public class UserProfile {
     @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String lastName;
 
     @Column(unique = true, nullable = false)
@@ -35,6 +38,7 @@ public class UserProfile {
     @Column(unique = true, nullable = false)
     private String phoneNumber;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = true)
     private OffsetDateTime createdAt;
 

@@ -109,4 +109,6 @@ public class UserController {
         userService.updateUserProfileLastName(email, newLastName);
     }
 
+    //Add a getmapping for userProfile
+
 }

@@ -1,6 +1,8 @@
 package com.spoctexter.UserAccountLayer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.Friends.Friend;
 import com.spoctexter.UserProfileLayer.UserProfile;
 
@@ -20,6 +22,7 @@ public class UserAccount {
     @Column(unique = true, updatable = false, nullable = false)
     private UUID id;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonManagedReference
     @OneToOne(
             cascade = CascadeType.ALL,
@@ -32,9 +35,11 @@ public class UserAccount {
     @Column(unique = true, nullable = false)
     private String userName;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String userPassword;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
