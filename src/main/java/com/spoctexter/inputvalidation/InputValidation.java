@@ -3,7 +3,6 @@ package com.spoctexter.inputvalidation;
 import com.spoctexter.UserProfileLayer.UserProfile;
 import com.spoctexter.UserProfileLayer.UserRepository;
 import com.spoctexter.exception.BadInputException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class InputValidation {
 
@@ -57,6 +56,24 @@ public class InputValidation {
                             return badInputException;
                         }
                 );
+    }
+
+    public UserProfile checkEmailConflict(String newEmail, UserRepository userRepository) {
+        if(!this.isValidEmail(newEmail)) {
+            throw new BadInputException(newEmail + " is not a valid email.");
+        }
+        return userRepository
+                .findUserProfileByEmail(newEmail)
+                .orElse(null);
+    }
+
+    public UserProfile checkPhoneConflict(String phoneNum, UserRepository userRepository) {
+        if(!this.isValidPhone(phoneNum)) {
+            throw new BadInputException(phoneNum + " is not a valid phone number.");
+        }
+        return userRepository
+                .findUserProfileByPhoneNumber(phoneNum)
+                .orElse(null);
     }
 
 }

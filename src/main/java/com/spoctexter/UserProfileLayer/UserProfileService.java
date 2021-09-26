@@ -95,47 +95,31 @@ public class UserProfileService {
 
     @Transactional
     public void updateUserProfileEmail(String email, String newEmail) {
-        if (!inputValidator.isValidEmail(newEmail) || !inputValidator.isValidEmail(email)) {
-            throw new BadInputException(email + " is not a valid email.");
-        }
-        Optional<UserProfile> currentUserOptional = userRepository
-                .findUserProfileByEmail(email);
-        if (!currentUserOptional.isPresent()) {
-            throw new NotFoundException("Sorry, we could not find your email.");
+
+        UserProfile currentUser = inputValidator.checkEmail(email, userRepository);
+
+        UserProfile conflictUser = inputValidator.checkEmailConflict(newEmail, userRepository);
+        if (conflictUser != null) {
+            throw new NamingConflictException("Sorry, your new email is already taken.");
         }
         else {
-            Optional <UserProfile> conflictUser = userRepository
-                    .findUserProfileByEmail(newEmail);
-            if (conflictUser.isPresent()) {
-               throw new IllegalStateException("Sorry, your new email is already taken.");
-            }
-            else {
-                currentUserOptional.get().setEmail(newEmail);
-                userRepository.save(currentUserOptional.get());
-            }
+            currentUser.setEmail(newEmail);
+            userRepository.save(currentUser);
         }
     }
 
     @Transactional
     public void updateUserProfilePhoneNumber(String phoneNumber, String newPhoneNumber) {
-        if (!inputValidator.isValidPhone(phoneNumber) || !inputValidator.isValidPhone(newPhoneNumber)) {
-            throw new IllegalStateException("Please enter a valid phone number.");
-        }
-        Optional<UserProfile> currentUserOptional = userRepository
-                .findUserProfileByPhoneNumber(phoneNumber);
-        if (!currentUserOptional.isPresent()) {
-            throw new IllegalStateException("Sorry, we could not find your account based on the phone number you entered.");
+
+        UserProfile currentUser = inputValidator.checkPhone(phoneNumber, userRepository);
+
+        UserProfile conflictUser = inputValidator.checkPhoneConflict(newPhoneNumber, userRepository);
+        if (conflictUser != null) {
+            throw new NamingConflictException("Sorry, your new phone number is already taken.");
         }
         else {
-            Optional <UserProfile> conflictUser = userRepository
-                    .findUserProfileByPhoneNumber(newPhoneNumber);
-            if (conflictUser.isPresent()) {
-                throw new IllegalStateException("Sorry, your new phone number is already taken.");
-            }
-            else {
-                currentUserOptional.get().setPhoneNumber(newPhoneNumber);
-                userRepository.save(currentUserOptional.get());
-            }
+            currentUser.setPhoneNumber(newPhoneNumber);
+            userRepository.save(currentUser);
         }
     }
 
