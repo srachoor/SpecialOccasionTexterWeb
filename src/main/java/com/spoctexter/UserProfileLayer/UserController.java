@@ -52,20 +52,17 @@ public class UserController {
 
     @GetMapping(path = "id={id}")
     public UserProfile getUserProfileByID(@NotNull @PathVariable("id") UUID id) {
-        return userService.getUserProfileByID(id)
-                .orElse(null);
+        return userService.getUserProfileByID(id);
     }
 
     @GetMapping(path = "email={email}")
     public UserProfile getUserProfileByEmail(@NotNull @PathVariable("email") String email) {
-        return userService.getUserProfileByEmail(email)
-                .orElse(null);
+        return userService.getUserProfileByEmail(email);
     }
 
     @GetMapping(path = "phoneNumber={phoneNumber}")
     public UserProfile getUserProfileByPhoneNumber(@NotNull @PathVariable("phoneNumber") String phoneNumber) {
-        return userService.getUserProfileByPhoneNumber(phoneNumber)
-                .orElse(null);
+        return userService.getUserProfileByPhoneNumber(phoneNumber);
     }
 
     @DeleteMapping(path = "id={id}")

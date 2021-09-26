@@ -1,4 +1,4 @@
-package com.spoctexter.Friends;
+package com.spoctexter.friends;
 
 import com.spoctexter.Occasions.Occasion;
 import com.spoctexter.UserAccountLayer.UserAccount;
@@ -6,7 +6,6 @@ import com.spoctexter.UserAccountLayer.UserAccount;
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 

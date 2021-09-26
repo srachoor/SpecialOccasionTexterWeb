@@ -27,7 +27,7 @@ public class UserAccountController {
             @NotNull @Valid @RequestBody UserAccount userAccount,
             @NotNull @RequestParam(name = "email") String email) {
 
-        UserProfile userProfile = userProfileService.getUserProfileByEmail(email).orElse(null);
+        UserProfile userProfile = userProfileService.getUserProfileByEmail(email);
 
         userAccount.setUserProfile(userProfile);
         userAccount.setCreatedAt(OffsetDateTime.now());
@@ -38,14 +38,14 @@ public class UserAccountController {
     public UserAccount getUserAccountByEmail (
             @NotNull @PathVariable("email") String email
     ) {
-        return userAccountService.getUserAccountByEmail(email);
+        return userProfileService.getUserProfileByEmail(email).getUserAccount();
     }
 
     @GetMapping (path = "phone={phoneNumber}")
     public UserAccount getUserAccountByPhoneNumber (
             @NotNull @PathVariable("phoneNumber") String phoneNumber
     ) {
-        return userAccountService.getUserAccountByPhoneNumber(phoneNumber);
+        return userProfileService.getUserProfileByPhoneNumber(phoneNumber).getUserAccount();
     }
 
     @GetMapping (path = "username={userName}")

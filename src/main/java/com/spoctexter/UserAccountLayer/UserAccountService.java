@@ -37,32 +37,6 @@ public class UserAccountService {
 
     }
 
-    public UserAccount getUserAccountByEmail(String email) {
-        Optional <UserProfile> userProfileOptional = userProfileRepository
-                .findUserProfileByEmail(email);
-
-        if (userProfileOptional.isPresent()) {
-            return userProfileOptional.get().getUserAccount();
-        }
-        else{
-            throw new IllegalStateException("Email not associated with an account.");
-        }
-
-    }
-
-    public UserAccount getUserAccountByPhoneNumber(String phoneNumber) {
-        Optional <UserProfile> userProfileOptional = userProfileRepository
-                .findUserProfileByPhoneNumber(phoneNumber);
-
-        if (userProfileOptional.isPresent()) {
-            return userProfileOptional.get().getUserAccount();
-        }
-        else{
-            throw new IllegalStateException("Phone number not associated with an account.");
-        }
-
-    }
-
     public UserAccount getUserAccountByUserName(String userName) {
         Optional <UserAccount> userAccountOptional = userAccountRepository.findUserAccountByUserName(userName);
 

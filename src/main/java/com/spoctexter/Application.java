@@ -1,7 +1,7 @@
 package com.spoctexter;
 
-import com.spoctexter.Friends.Friend;
-import com.spoctexter.Friends.FriendRepository;
+import com.spoctexter.friends.Friend;
+import com.spoctexter.friends.FriendRepository;
 import com.spoctexter.Occasions.Occasion;
 import com.spoctexter.Occasions.OccasionRepository;
 import com.spoctexter.UserAccountLayer.UserAccount;

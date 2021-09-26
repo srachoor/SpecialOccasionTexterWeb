@@ -1,9 +1,8 @@
 package com.spoctexter.UserAccountLayer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.spoctexter.Friends.Friend;
+import com.spoctexter.friends.Friend;
 import com.spoctexter.UserProfileLayer.UserProfile;
 
 import javax.persistence.*;
@@ -11,8 +10,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity (name = "UserAccount")  //this Entity name gets referenced in our JPQL queries
 @Table

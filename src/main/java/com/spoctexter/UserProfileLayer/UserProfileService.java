@@ -1,5 +1,9 @@
 package com.spoctexter.UserProfileLayer;
 
+import com.spoctexter.exception.BadInputException;
+import com.spoctexter.exception.NamingConflictException;
+import com.spoctexter.exception.NotFoundException;
+import com.spoctexter.inputvalidation.InputValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +11,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.*;
 
 @Service
 public class UserProfileService {
@@ -19,6 +22,8 @@ public class UserProfileService {
         this.userRepository = userRepository;
     }
 
+    private final InputValidation inputValidator = new InputValidation();
+
     public List<UserProfile> getUserProfiles() { return userRepository.findAll(); }
 
     public void addNewUserProfile(UserProfile userProfile) {
@@ -26,48 +31,49 @@ public class UserProfileService {
                 .findUserProfileByEmail(userProfile.getEmail());
 
         if (userOptional.isPresent()) {
-            throw new IllegalStateException("Email already taken");
+            throw new NamingConflictException("Email is already registered to another user.");
         }
 
         else if (!userOptional.isPresent()) {
-            userOptional = userRepository.findUserProfileByPhoneNumber(userProfile.getPhoneNumber());
+            userOptional = userRepository
+                    .findUserProfileByPhoneNumber(userProfile
+                            .getPhoneNumber());
         }
 
         if (userOptional.isPresent()) {
-            throw new IllegalStateException("Phone number already taken");
+            throw new NamingConflictException("Phone number is already registered to another user.");
         }
 
-        if (isValidPhone(userProfile.getPhoneNumber()) == false){
-            throw new IllegalStateException("Please enter a valid phone number");
+        if (!inputValidator.isValidPhone(userProfile.getPhoneNumber())){
+            throw new BadInputException("Please enter a valid phone number.");
         }
 
-        if (isValidEmail(userProfile.getEmail()) == false) {
-            throw new IllegalStateException("Please enter a valid email address");
+        if (!inputValidator.isValidEmail(userProfile.getEmail())) {
+            throw new BadInputException("Please enter a valid email address.");
         }
 
         userRepository.save(userProfile);
     }
 
-    public Optional <UserProfile> getUserProfileByID(UUID id) {
-        return this.userRepository.findById(id);
+    public UserProfile getUserProfileByID(UUID id) {
+
+        return this.userRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> {
+                            NotFoundException notFoundException = new NotFoundException(
+                                    "User with id " + id + " not found");
+                            return notFoundException;
+                        }
+                );
     }
 
-    public Optional <UserProfile> getUserProfileByEmail(String email) {
-        Optional<UserProfile> userOptional = userRepository
-                .findUserProfileByEmail(email);
-        if (userOptional.isPresent()) {
-            return this.userRepository.findUserProfileByEmail(email);
-        }
-        throw new IllegalStateException(("Email does not exist"));
+    public UserProfile getUserProfileByEmail(String email) {
+        return inputValidator.checkEmail(email, this.userRepository);
     }
 
-    public Optional <UserProfile> getUserProfileByPhoneNumber(String phoneNumber) {
-        Optional<UserProfile> userOptional = userRepository
-                .findUserProfileByPhoneNumber(phoneNumber);
-        if (userOptional.isPresent()) {
-            return this.userRepository.findUserProfileByPhoneNumber(phoneNumber);
-        }
-        throw new IllegalStateException(("Phone number does not exist"));
+    public UserProfile getUserProfileByPhoneNumber(String phoneNumber) {
+        return inputValidator.checkPhone(phoneNumber, this.userRepository);
     }
 
     public void deleteUserProfileByID(UUID id) {
@@ -76,40 +82,26 @@ public class UserProfileService {
         if (userOptional.isPresent()) {
             userRepository.deleteById(id);
         }
-        throw new IllegalStateException(("User does not exist"));
+        throw new NotFoundException(("User with " + id + " does not exist."));
     }
 
     public void deleteUserProfileByEmail(String email) {
-        Optional<UserProfile> userOptional = userRepository
-                .findUserProfileByEmail(email);
-        if (userOptional.isPresent()) {
-            userRepository.deleteById(userOptional.get().getId());
-        }
-        else {
-            throw new IllegalStateException(("Email does not exist or is not valid."));
-        }
+        userRepository.deleteById(inputValidator.checkEmail(email,this.userRepository).getId());
     }
 
     public void deleteUserProfileByPhoneNumber(String phoneNumber) {
-        Optional<UserProfile> userOptional = userRepository
-                .findUserProfileByPhoneNumber(phoneNumber);
-        if (userOptional.isPresent()) {
-            userRepository.deleteById(userOptional.get().getId());
-        }
-        else {
-            throw new IllegalStateException(("Phone number does not exist or is not valid."));
-        }
+        userRepository.deleteById(inputValidator.checkPhone(phoneNumber,this.userRepository).getId());
     }
 
     @Transactional
     public void updateUserProfileEmail(String email, String newEmail) {
-        if (isValidEmail(newEmail) == false || isValidEmail(email) == false) {
-            throw new IllegalStateException("Please enter a valid email address.");
+        if (!inputValidator.isValidEmail(newEmail) || !inputValidator.isValidEmail(email)) {
+            throw new BadInputException(email + " is not a valid email.");
         }
         Optional<UserProfile> currentUserOptional = userRepository
                 .findUserProfileByEmail(email);
         if (!currentUserOptional.isPresent()) {
-            throw new IllegalStateException("Sorry, we could not find your email.");
+            throw new NotFoundException("Sorry, we could not find your email.");
         }
         else {
             Optional <UserProfile> conflictUser = userRepository
@@ -126,7 +118,7 @@ public class UserProfileService {
 
     @Transactional
     public void updateUserProfilePhoneNumber(String phoneNumber, String newPhoneNumber) {
-        if (isValidPhone(phoneNumber) == false || isValidPhone(newPhoneNumber) == false) {
+        if (!inputValidator.isValidPhone(phoneNumber) || !inputValidator.isValidPhone(newPhoneNumber)) {
             throw new IllegalStateException("Please enter a valid phone number.");
         }
         Optional<UserProfile> currentUserOptional = userRepository
@@ -149,7 +141,7 @@ public class UserProfileService {
 
     @Transactional
     public void updateUserProfileFirstName(String email, String newFirstName) {
-        if (isValidEmail(email) == false) {
+        if (!inputValidator.isValidEmail(email)) {
             throw new IllegalStateException("Please enter a valid email");
         }
         Optional<UserProfile> currentUserOptional = userRepository
@@ -165,7 +157,7 @@ public class UserProfileService {
 
     @Transactional
     public void updateUserProfileLastName(String email, String newLastName) {
-        if (isValidEmail(email) == false) {
+        if (!inputValidator.isValidEmail(email)) {
             throw new IllegalStateException("Please enter a valid email");
         }
         Optional<UserProfile> currentUserOptional = userRepository
@@ -178,24 +170,4 @@ public class UserProfileService {
             userRepository.save(currentUserOptional.get());
         }
     }
-
-    public boolean isValidPhone(String phoneNum) {
-        if (phoneNum.length() == 10) {
-            try {
-                Long.parseLong(phoneNum);
-                return true;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-        else {
-            return false;
-        }
-    }
-
-    public boolean isValidEmail(String emailStr) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return emailStr.matches(regex);
-    }
-
 }

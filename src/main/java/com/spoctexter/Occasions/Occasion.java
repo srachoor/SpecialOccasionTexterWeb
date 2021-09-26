@@ -1,7 +1,6 @@
 package com.spoctexter.Occasions;
 
-import com.spoctexter.Friends.Friend;
-import com.spoctexter.UserAccountLayer.UserAccount;
+import com.spoctexter.friends.Friend;
 
 import javax.persistence.*;
 
