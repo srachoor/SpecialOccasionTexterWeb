@@ -1,6 +1,5 @@
 package com.spoctexter.UserProfileLayer;
 
-import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NamingConflictException;
 import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.inputvalidation.InputValidation;
