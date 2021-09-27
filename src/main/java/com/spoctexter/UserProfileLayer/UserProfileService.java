@@ -113,33 +113,19 @@ public class UserProfileService {
 
     @Transactional
     public void updateUserProfileFirstName(String email, String newFirstName) {
-        if (!inputValidator.isValidEmail(email)) {
-            throw new IllegalStateException("Please enter a valid email");
-        }
-        Optional<UserProfile> currentUserOptional = userRepository
-                .findUserProfileByEmail(email);
-        if (!currentUserOptional.isPresent()) {
-            throw new IllegalStateException("Sorry, we could not find your account based on the email.");
-        }
-        else {
-            currentUserOptional.get().setFirstName(newFirstName);
-            userRepository.save(currentUserOptional.get());
-        }
+
+        UserProfile currentUser = inputValidator.checkEmail(email,userRepository);
+        currentUser.setFirstName(newFirstName);
+        userRepository.save(currentUser);
+
     }
 
     @Transactional
     public void updateUserProfileLastName(String email, String newLastName) {
-        if (!inputValidator.isValidEmail(email)) {
-            throw new IllegalStateException("Please enter a valid email");
-        }
-        Optional<UserProfile> currentUserOptional = userRepository
-                .findUserProfileByEmail(email);
-        if (!currentUserOptional.isPresent()) {
-            throw new IllegalStateException("Sorry, we could not find your account based on the email.");
-        }
-        else {
-            currentUserOptional.get().setLastName(newLastName);
-            userRepository.save(currentUserOptional.get());
-        }
+
+        UserProfile currentUser = inputValidator.checkEmail(email,userRepository);
+        currentUser.setLastName(newLastName);
+        userRepository.save(currentUser);
+
     }
 }
