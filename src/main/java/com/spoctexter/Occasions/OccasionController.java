@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "api/v1/spoc/account/friend")
+@RequestMapping(path = "api/v1/spoc/account/friend/occasion")
 public class OccasionController {
 
     private final FriendService friendService;
@@ -25,10 +25,17 @@ public class OccasionController {
 
     @PostMapping
     public void addOccasion(
-            @NotNull @RequestParam UUID friendId,
+            @NotNull @RequestParam(name = "friendID") UUID friendId,
             @NotNull @RequestBody @Valid Occasion occasion
     ) {
         occasionService.addOccasion(friendId, occasion);
+    }
+
+    @DeleteMapping
+    public void removeOccasion(
+            @NotNull @RequestParam (name = "occasionID") Long occasionID
+    ) {
+        occasionService.removeOccasion(occasionID);
     }
 
 }
