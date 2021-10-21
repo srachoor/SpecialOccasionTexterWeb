@@ -2,6 +2,7 @@ package com.spoctexter.UserAccountLayer;
 
 import com.spoctexter.UserProfileLayer.UserProfile;
 
+@Deprecated
 public class RequestWrapperAccProf {
 
     UserProfile userProfile;

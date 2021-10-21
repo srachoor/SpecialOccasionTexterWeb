@@ -13,12 +13,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "api/v1/spoc/profile")
-public class UserController {
+public class UserProfileController {
 
     private final UserProfileService userService;
 
     @Autowired
-    public UserController(UserProfileService userService) {
+    public UserProfileController(UserProfileService userService) {
         this.userService = userService;
     }
 
@@ -80,12 +80,12 @@ public class UserController {
         userService.deleteUserProfileByPhoneNumber(phoneNumber);
     }
 
-    @PutMapping(path = "oldemail={email}/newemail={newEmail}")
+    @PutMapping(path = "oldEmail={email}/newEmail={newEmail}")
     public void updateUserProfileEmail(@NotNull @PathVariable("email") String email, @NotNull @PathVariable("newEmail") String newEmail) {
         userService.updateUserProfileEmail(email, newEmail);
     }
 
-    @PutMapping(path = "oldphone={phone}/newphone={newPhone}")
+    @PutMapping(path = "oldPhone={phone}/newPhone={newPhone}")
     public void updateUserProfilePhone(@NotNull @PathVariable("phone") String phoneNumber, @NotNull @PathVariable("newPhone") String newPhoneNumber) {
         userService.updateUserProfilePhoneNumber(phoneNumber, newPhoneNumber);
     }
@@ -106,6 +106,5 @@ public class UserController {
         userService.updateUserProfileLastName(email, newLastName);
     }
 
-    //Add a getmapping for userProfile
 
 }

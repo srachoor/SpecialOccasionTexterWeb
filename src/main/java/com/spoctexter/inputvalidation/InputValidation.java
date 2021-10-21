@@ -1,8 +1,12 @@
 package com.spoctexter.inputvalidation;
 
+import com.spoctexter.UserAccountLayer.UserAccount;
+import com.spoctexter.UserAccountLayer.UserAccountRepository;
 import com.spoctexter.UserProfileLayer.UserProfile;
 import com.spoctexter.UserProfileLayer.UserRepository;
 import com.spoctexter.exception.BadInputException;
+import com.spoctexter.exception.NotFoundException;
+import org.aspectj.weaver.ast.Not;
 
 public class InputValidation {
 
@@ -36,9 +40,9 @@ public class InputValidation {
                 .findUserProfileByPhoneNumber(phoneNum)
                 .orElseThrow(
                         () -> {
-                            BadInputException badInputException = new BadInputException(
+                            NotFoundException notFoundException = new NotFoundException(
                                     "User with phone number " + phoneNum + " is not found.");
-                            return badInputException;
+                            return notFoundException;
                         }
                 );
     }
@@ -51,9 +55,9 @@ public class InputValidation {
                 .findUserProfileByEmail(email)
                 .orElseThrow(
                         () -> {
-                            BadInputException badInputException = new BadInputException(
+                            NotFoundException notFoundException = new NotFoundException(
                                     "User with email " + email + " not found");
-                            return badInputException;
+                            return notFoundException;
                         }
                 );
     }
@@ -73,6 +77,12 @@ public class InputValidation {
         }
         return userRepository
                 .findUserProfileByPhoneNumber(phoneNum)
+                .orElse(null);
+    }
+
+    public UserAccount checkUserNameConflict(String userName, UserAccountRepository userAccountRepository) {
+        return userAccountRepository
+                .findUserAccountByUserName(userName)
                 .orElse(null);
     }
 
