@@ -63,12 +63,12 @@ public class Application {
                     user
             );
 
-//            accountRepository.save(userAccount);
+            accountRepository.save(userAccount);
 
             Friend Sai = new Friend (UUID.randomUUID(),"Sai","Rachoor","8564269229",OffsetDateTime.now());
             userAccount.addFriend(Sai);
 
-//            friendRepository.save(Sai);
+            friendRepository.save(Sai);
 
             Occasion saiBirthday = new Occasion("Sai's Birthday",OffsetDateTime.now().minusYears(32));
             Occasion saiAnniversary = new Occasion("Sai's Anniversary", OffsetDateTime.now());
@@ -76,10 +76,10 @@ public class Application {
             Sai.addOccasion(saiBirthday);
             Sai.addOccasion(saiAnniversary);
 
-//            occasionRepository.save(saiBirthday);
-//            occasionRepository.save(saiAnniversary);
+            occasionRepository.save(saiBirthday);
+            occasionRepository.save(saiAnniversary);
 
-            accountRepository.save(userAccount);
+//            accountRepository.save(userAccount);
 
         };
     }

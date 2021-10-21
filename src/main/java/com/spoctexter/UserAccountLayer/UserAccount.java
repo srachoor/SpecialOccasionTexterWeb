@@ -108,6 +108,10 @@ public class UserAccount {
         this.createdAt = createdAt;
     }
 
+    public List<Friend> getFriends() {
+        return friends;
+    }
+
     public void addFriend(Friend friend) {
         if (!this.friends.contains(friend)) {
             this.friends.add(friend);

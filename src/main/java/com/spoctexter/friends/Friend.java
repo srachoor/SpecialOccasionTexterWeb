@@ -23,7 +23,7 @@ public class Friend {
     @Column(nullable = false)
     private String friendLastName;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String friendPhoneNumber;
 
     @Column(nullable = true)
