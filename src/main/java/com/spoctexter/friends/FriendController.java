@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -40,11 +41,17 @@ public class FriendController {
         friendService.deleteFriendById(id);
     }
 
-    //Add delete mapping for deleting a friend by friendId
-    //Add put mapping for updating friend's phone number
-    //Add put mapping for updating friend's first name and last name
+    @PutMapping(path="update")
+    public void updateFriend(
+            @RequestParam (name="newFriendPhoneNumber") String newFriendPhoneNumber,
+            @RequestParam (name="newFriendFirstName") String newFriendFirstName,
+            @RequestParam (name="newFriendLastName") String newFriendLastName,
+            @NotNull @RequestParam(name = "friendId") UUID friendId
+            ) {
+
+        friendService.updateFriend(newFriendPhoneNumber, newFriendFirstName, newFriendLastName, friendId);
+    }
+
     //Will want to figure out how to update multiple friends for a given user
-
-
 
 }

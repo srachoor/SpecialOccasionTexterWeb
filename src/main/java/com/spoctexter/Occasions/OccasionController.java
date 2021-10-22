@@ -1,7 +1,5 @@
 package com.spoctexter.Occasions;
 
-import com.spoctexter.UserAccountLayer.UserAccountService;
-import com.spoctexter.friends.FriendController;
 import com.spoctexter.friends.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

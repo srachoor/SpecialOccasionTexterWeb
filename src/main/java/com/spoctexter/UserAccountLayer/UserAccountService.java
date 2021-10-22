@@ -20,7 +20,6 @@ public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
     private final UserRepository userProfileRepository;
-
     private final InputValidation inputValidator = new InputValidation();
 
     @Autowired

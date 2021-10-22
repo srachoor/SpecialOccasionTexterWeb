@@ -6,7 +6,11 @@ import com.spoctexter.UserProfileLayer.UserProfile;
 import com.spoctexter.UserProfileLayer.UserRepository;
 import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NotFoundException;
+import com.spoctexter.friends.Friend;
+import com.spoctexter.friends.FriendRepository;
 import org.aspectj.weaver.ast.Not;
+
+import java.util.UUID;
 
 public class InputValidation {
 
@@ -62,6 +66,18 @@ public class InputValidation {
                 );
     }
 
+    public Friend checkFriend(UUID friendID, FriendRepository friendRepository) {
+        return friendRepository
+                .findById(friendID)
+                .orElseThrow(
+                        () -> {
+                            NotFoundException notFoundException = new NotFoundException(
+                                    "Friend was not found in your account");
+                            return notFoundException;
+                        }
+                );
+    }
+
     public UserProfile checkEmailConflict(String newEmail, UserRepository userRepository) {
         if(!this.isValidEmail(newEmail)) {
             throw new BadInputException(newEmail + " is not a valid email.");
@@ -83,6 +99,12 @@ public class InputValidation {
     public UserAccount checkUserNameConflict(String userName, UserAccountRepository userAccountRepository) {
         return userAccountRepository
                 .findUserAccountByUserName(userName)
+                .orElse(null);
+    }
+
+    public Friend checkFriendConflict(UserAccount userAccount, Friend friend, FriendRepository friendRepository) {
+        return friendRepository
+                .findFriendByUserAccountIdAndPhoneNumber(userAccount.getId(), friend.getFriendPhoneNumber())
                 .orElse(null);
     }
 
