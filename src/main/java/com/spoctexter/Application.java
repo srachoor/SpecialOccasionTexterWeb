@@ -9,17 +9,18 @@ import com.spoctexter.UserAccountLayer.UserAccountRepository;
 import com.spoctexter.UserProfileLayer.UserProfile;
 import com.spoctexter.UserProfileLayer.UserRepository;
 import com.github.javafaker.Faker;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.UUID;
 
+@EnableEncryptableProperties
 @SpringBootApplication
 public class Application {
 

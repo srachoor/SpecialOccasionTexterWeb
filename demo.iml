@@ -104,5 +104,7 @@
     <orderEntry type="library" name="Maven: dk.brics.automaton:automaton:1.11-8" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.16" level="project" />
+    <orderEntry type="library" name="Maven: com.github.ulisesbocchio:jasypt-spring-boot:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.melloware:jasypt:1.9.4" level="project" />
   </component>
 </module>
