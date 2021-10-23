@@ -128,4 +128,23 @@ public class UserProfileService {
         userRepository.save(currentUser);
 
     }
+
+    public void updateUserProfile(String newEmail, String newPhoneNumber, String newFirstName, String newLastName, UUID userProfileId) {
+
+        UserProfile userProfile = this.getUserProfileByID(userProfileId);
+
+        if(newEmail != "") {
+            this.updateUserProfileEmail(userProfile.getEmail(), newEmail);
+        }
+        if(newPhoneNumber != "") {
+            this.updateUserProfilePhoneNumber(userProfile.getPhoneNumber(),newPhoneNumber);
+        }
+        if(newFirstName != "") {
+            this.updateUserProfileFirstName(userProfile.getEmail(), newFirstName);
+        }
+        if(newLastName != "") {
+            this.updateUserProfileLastName(userProfile.getEmail(),newLastName);
+        }
+
+    }
 }

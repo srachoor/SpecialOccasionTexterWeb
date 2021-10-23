@@ -8,7 +8,6 @@ import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.friends.Friend;
 import com.spoctexter.friends.FriendRepository;
-import org.aspectj.weaver.ast.Not;
 
 import java.util.UUID;
 
@@ -73,6 +72,18 @@ public class InputValidation {
                         () -> {
                             NotFoundException notFoundException = new NotFoundException(
                                     "Friend was not found in your account");
+                            return notFoundException;
+                        }
+                );
+    }
+
+    public UserAccount checkUserName(String userName, UserAccountRepository userAccountRepository) {
+        return userAccountRepository
+                .findUserAccountByUserName(userName)
+                .orElseThrow(
+                        () -> {
+                            NotFoundException notFoundException = new NotFoundException(
+                                    "User with username " + userName + " was not found.");
                             return notFoundException;
                         }
                 );

@@ -1,10 +1,7 @@
 package com.spoctexter.UserProfileLayer;
 
 import com.sun.istack.NotNull;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -80,6 +77,19 @@ public class UserProfileController {
         userService.deleteUserProfileByPhoneNumber(phoneNumber);
     }
 
+    @PutMapping(path = "update")
+    public void updateUserProfile(
+            @RequestParam (name = "newEmail") String newEmail,
+            @RequestParam (name = "newPhoneNumber") String newPhoneNumber,
+            @RequestParam (name = "newFirstName") String newFirstName,
+            @RequestParam (name = "newLastName") String newLastName,
+            @RequestParam (name = "userProfileId") UUID userProfileId
+    ) {
+        userService.updateUserProfile(newEmail, newPhoneNumber, newFirstName, newLastName, userProfileId);
+    }
+
+
+    /*@Deprecated
     @PutMapping(path = "oldEmail={email}/newEmail={newEmail}")
     public void updateUserProfileEmail(@NotNull @PathVariable("email") String email, @NotNull @PathVariable("newEmail") String newEmail) {
         userService.updateUserProfileEmail(email, newEmail);
@@ -104,7 +114,7 @@ public class UserProfileController {
             @NotNull @PathVariable("newLastName") String newLastName) {
 
         userService.updateUserProfileLastName(email, newLastName);
-    }
+    }*/
 
 
 }

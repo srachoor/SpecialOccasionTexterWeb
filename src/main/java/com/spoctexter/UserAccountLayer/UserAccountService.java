@@ -1,19 +1,15 @@
 package com.spoctexter.UserAccountLayer;
 
 
-import com.spoctexter.UserProfileLayer.UserProfile;
 import com.spoctexter.UserProfileLayer.UserRepository;
 import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NamingConflictException;
-import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.inputvalidation.InputValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class UserAccountService {
@@ -42,17 +38,7 @@ public class UserAccountService {
     }
 
     public UserAccount getUserAccountByUserName(String userName) {
-
-        return this.userAccountRepository
-                .findUserAccountByUserName(userName)
-                .orElseThrow(
-                        () -> {
-                            com.spoctexter.exception.NotFoundException notFoundException = new NotFoundException(
-                                    "Username " + userName + " not found");
-                            return notFoundException;
-                        }
-                );
-
+        return inputValidator.checkUserName(userName, userAccountRepository);
     }
 
     public Boolean validatePassword(String userName, String password) {
@@ -65,26 +51,18 @@ public class UserAccountService {
         }
     }
 
+    @Transactional
     public void updateUserName(String userName, String newUserName) {
-        Optional<UserAccount> userAccountOptional = userAccountRepository.findUserAccountByUserName(userName);
-
-        if(userAccountOptional.isPresent()) {
-            userAccountOptional.get().setUserName(newUserName);
-            userAccountRepository.save(userAccountOptional.get());
-        } else {
-            throw new NotFoundException("Username not associated with an account.");
-        }
-
+        UserAccount userAccount = getUserAccountByUserName(userName);
+        userAccount.setUserName(newUserName);
+        userAccountRepository.save(userAccount);
     }
 
+    @Transactional
     public void updatePassword(String userName, String newPassword) {
-        Optional<UserAccount> userAccountOptional = userAccountRepository.findUserAccountByUserName(userName);
+        UserAccount userAccount = getUserAccountByUserName(userName);
+        userAccount.setUserPassword(newPassword);
+        userAccountRepository.save(userAccount);
 
-        if (userAccountOptional.isPresent()) {
-            userAccountOptional.get().setUserPassword(newPassword);
-            userAccountRepository.save(userAccountOptional.get());
-        } else {
-            throw new NotFoundException("Username not associated with an account.");
-        }
     }
 }

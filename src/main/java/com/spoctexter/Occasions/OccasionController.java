@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,17 +24,41 @@ public class OccasionController {
 
     @PostMapping
     public void addOccasion(
-            @NotNull @RequestParam(name = "friendID") UUID friendId,
+            @NotNull @RequestParam(name = "friendId") UUID friendId,
             @NotNull @RequestBody @Valid Occasion occasion
     ) {
         occasionService.addOccasion(friendId, occasion);
     }
 
-    @DeleteMapping
-    public void removeOccasion(
-            @NotNull @RequestParam (name = "occasionID") Long occasionID
+    @GetMapping
+    public Occasion getOccasionByOccasionId(
+            @NotNull @RequestParam(name = "occasionId") Long occasionId
     ) {
-        occasionService.removeOccasion(occasionID);
+        return occasionService.getOccasionByOccasionId(occasionId);
     }
 
+    @GetMapping (path = "all")
+    public List<Occasion> getOccasionsByFriendId(
+            @NotNull @RequestParam(name = "friendId") UUID friendId
+    ) {
+        return occasionService.getOccasionsByFriendId(friendId);
+    }
+
+    @DeleteMapping
+    public void removeOccasion(
+            @NotNull @RequestParam (name = "occasionId") Long occasionId
+    ) {
+        occasionService.removeOccasion(occasionId);
+    }
+
+    @PutMapping
+    public void updateOccasion(
+            @NotNull @RequestParam (name = "occasionId") Long occasionId,
+            @RequestParam (name = "occasionName") String occasionName,
+            @RequestParam (name = "occasionDate") String occasionDate
+    ) {
+        occasionService.updateOccasion(occasionId, occasionName, occasionDate);
+    }
+
+    //Need to add putMapping for editing an occasion (need to add the occasion date field as well)
 }

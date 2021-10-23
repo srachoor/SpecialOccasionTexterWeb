@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.UserAccountLayer.UserAccount;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 

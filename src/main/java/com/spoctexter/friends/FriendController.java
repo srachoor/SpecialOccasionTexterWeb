@@ -2,14 +2,12 @@ package com.spoctexter.friends;
 
 import com.spoctexter.UserAccountLayer.UserAccount;
 import com.spoctexter.UserAccountLayer.UserAccountService;
-import com.spoctexter.UserProfileLayer.UserProfileService;
 import com.sun.istack.NotNull;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -34,6 +32,20 @@ public class FriendController {
         friendService.addNewFriend(userAccount, friend);
     }
 
+    @GetMapping
+    public Friend getFriendById(
+            @NotNull @RequestParam(name = "friendId") UUID friendId
+    ) {
+        return friendService.getFriendById(friendId);
+    }
+
+    @GetMapping(path = "all")
+    public List <Friend> getFriendsByUser(
+            @RequestParam (name = "userProfileId") UUID userProfileId
+    ){
+        return friendService.getFriendsByUser(userProfileId);
+    }
+
     @DeleteMapping(path="delete")
     public void deleteFriend(
             @NotNull @RequestParam(name = "friendId") UUID id
@@ -46,10 +58,11 @@ public class FriendController {
             @RequestParam (name="newFriendPhoneNumber") String newFriendPhoneNumber,
             @RequestParam (name="newFriendFirstName") String newFriendFirstName,
             @RequestParam (name="newFriendLastName") String newFriendLastName,
+            @RequestParam (name="newFriendDOB") String newFriendDOB,
             @NotNull @RequestParam(name = "friendId") UUID friendId
             ) {
 
-        friendService.updateFriend(newFriendPhoneNumber, newFriendFirstName, newFriendLastName, friendId);
+        friendService.updateFriend(newFriendPhoneNumber, newFriendFirstName, newFriendLastName, newFriendDOB, friendId);
     }
 
     //Will want to figure out how to update multiple friends for a given user

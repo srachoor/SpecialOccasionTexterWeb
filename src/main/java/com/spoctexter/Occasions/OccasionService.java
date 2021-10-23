@@ -1,12 +1,16 @@
 package com.spoctexter.Occasions;
 
+import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.friends.Friend;
 import com.spoctexter.friends.FriendRepository;
+import com.spoctexter.inputvalidation.InputValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,6 +18,7 @@ public class OccasionService {
 
     private final OccasionRepository occasionRepository;
     private final FriendRepository friendRepository;
+    private final InputValidation inputValidator = new InputValidation();
 
     @Autowired
     public OccasionService(OccasionRepository occasionRepository, FriendRepository friendRepository) {
@@ -22,22 +27,45 @@ public class OccasionService {
     }
 
     public void addOccasion(UUID friendID, Occasion occasion) {
-        Optional<Friend> optionalFriend = friendRepository.findById(friendID);
-        if(optionalFriend.get() != null) {
-            Friend friend = optionalFriend.get();
-            occasion.setFriend(friend);
-        } else {
-            throw new NotFoundException("Friend not found.");
-        }
+
+        Friend friend = inputValidator.checkFriend(friendID,friendRepository);
+        occasion.setFriend(friend);
+        occasionRepository.save(occasion);
+
     }
 
     public void removeOccasion(Long occasionID) {
-        Optional<Occasion> optionalOccasion = occasionRepository.findById(occasionID);
-        if(optionalOccasion.get() != null) {
-            occasionRepository.deleteById(occasionID);
-        } else {
-            throw new NotFoundException("Occasion nnot found");
-        }
+        occasionRepository.delete(getOccasionByOccasionId(occasionID));
     }
 
+    public Occasion getOccasionByOccasionId(Long occasionId) {
+        return occasionRepository
+                .findById(occasionId)
+                .orElseThrow(
+                        () -> {
+                            NotFoundException notFoundException = new NotFoundException(
+                                    "Occasion not found.");
+                            return notFoundException;
+                        }
+                );
+    }
+
+    public List<Occasion> getOccasionsByFriendId(UUID friendId) {
+        Friend friend = inputValidator.checkFriend(friendId, friendRepository);
+        return friend.getOccasions();
+    }
+
+    @Transactional
+    public void updateOccasion(Long occasionId, String occasionName, String occasionDate) {
+        Occasion occasion = getOccasionByOccasionId(occasionId);
+        if(!occasionName.equals("")) {
+            occasion.setOccasionName(occasionName);
+        }
+        if(!occasionDate.equals("")){
+            occasion.setOccasionDate(LocalDate.parse(occasionDate));
+        }
+        else {
+            throw new BadInputException("No inputs for changing the occasion were provided");
+        }
+    }
 }

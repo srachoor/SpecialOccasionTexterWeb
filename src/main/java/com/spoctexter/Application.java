@@ -14,6 +14,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.UUID;
@@ -65,13 +67,13 @@ public class Application {
 
             accountRepository.save(userAccount);
 
-            Friend Sai = new Friend (UUID.randomUUID(),"Sai","Rachoor","8564269229",OffsetDateTime.now());
+            Friend Sai = new Friend (UUID.randomUUID(),"Sai","Rachoor","8564269229", LocalDate.now());
             userAccount.addFriend(Sai);
 
             friendRepository.save(Sai);
 
-            Occasion saiBirthday = new Occasion("Sai's Birthday",OffsetDateTime.now().minusYears(32));
-            Occasion saiAnniversary = new Occasion("Sai's Anniversary", OffsetDateTime.now());
+            Occasion saiBirthday = new Occasion("Sai's Birthday", LocalDate.now().minusYears(32));
+            Occasion saiAnniversary = new Occasion("Sai's Anniversary", LocalDate.now());
 
             Sai.addOccasion(saiBirthday);
             Sai.addOccasion(saiAnniversary);
