@@ -5,8 +5,8 @@ import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.inputvalidation.InputValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +25,7 @@ public class UserProfileService {
 
     public List<UserProfile> getUserProfiles() { return userRepository.findAll(); }
 
+    @Transactional
     public void addNewUserProfile(UserProfile userProfile) {
         UserProfile conflictUserEmail = inputValidator.checkEmailConflict(userProfile.getEmail(),userRepository);
         UserProfile conflictUserPhone = inputValidator.checkPhoneConflict(userProfile.getPhoneNumber(),userRepository);
@@ -43,6 +44,7 @@ public class UserProfileService {
         }
     }
 
+    @Transactional
     public UserProfile getUserProfileByID(UUID id) {
 
         return this.userRepository
@@ -73,10 +75,12 @@ public class UserProfileService {
         throw new NotFoundException(("User with " + id + " does not exist."));
     }
 
+    @Transactional
     public void deleteUserProfileByEmail(String email) {
         userRepository.deleteById(inputValidator.checkEmail(email,this.userRepository).getId());
     }
 
+    @Transactional
     public void deleteUserProfileByPhoneNumber(String phoneNumber) {
         userRepository.deleteById(inputValidator.checkPhone(phoneNumber,this.userRepository).getId());
     }
@@ -145,6 +149,5 @@ public class UserProfileService {
         if(newLastName != "") {
             this.updateUserProfileLastName(userProfile.getEmail(),newLastName);
         }
-
     }
 }
