@@ -57,4 +57,4 @@ build/
 .vscode/
 
 ### Application Properties ###
-application.yml
+/src/main/resources/application.yml
