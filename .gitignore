@@ -56,3 +56,5 @@ build/
 ### VS Code ###
 .vscode/
 
+### Application Properties ###
+application.yml
