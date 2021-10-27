@@ -58,3 +58,4 @@ build/
 
 ### Application Properties ###
 /src/main/resources/application.yml
+*.yml
