@@ -59,3 +59,5 @@ build/
 ### Application Properties ###
 */src/main/resources/application.yml
 *.yml
+*/src/main/resources/application.properties
+*.properties
