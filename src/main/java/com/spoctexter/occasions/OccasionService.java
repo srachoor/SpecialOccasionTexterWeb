@@ -5,14 +5,14 @@ import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.friends.Friend;
 import com.spoctexter.friends.FriendRepository;
 import com.spoctexter.inputvalidation.InputValidation;
-import com.spoctexter.twilio.SmsRequest;
-import com.spoctexter.twilio.SmsScheduler;
-import com.spoctexter.twilio.TwilioSender;
+import com.spoctexter.twilio.*;
+import com.twilio.twiml.voice.Sms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,17 +23,20 @@ public class OccasionService {
     private final FriendRepository friendRepository;
     private final InputValidation inputValidator = new InputValidation();
     private final TwilioSender twilioSender;
-    private final SmsScheduler smsScheduler;
+    private final SchedulerController schedulerController;
+    private final SmsSchedulerRepository smsSchedulerRepository;
 
     @Autowired
     public OccasionService(OccasionRepository occasionRepository,
                            FriendRepository friendRepository,
                            TwilioSender twilioSender,
-                           SmsScheduler smsScheduler) {
+                           SchedulerController schedulerController,
+                           SmsSchedulerRepository smsSchedulerRepository) {
         this.occasionRepository = occasionRepository;
         this.friendRepository = friendRepository;
         this.twilioSender = twilioSender;
-        this.smsScheduler = smsScheduler;
+        this.schedulerController = schedulerController;
+        this.smsSchedulerRepository = smsSchedulerRepository;
     }
 
     public void addOccasion(UUID friendID, Occasion occasion) {
@@ -44,14 +47,20 @@ public class OccasionService {
 
         String phoneNumber = occasion.getFriend().getUserAccount().getUserProfile().getPhoneNumber();
 
-        SmsRequest smsRequest = new SmsRequest(phoneNumber, occasion.getOccasionName()+ ": sent at " + LocalDate.now().toString());
+        SmsScheduler smsScheduler = new SmsScheduler(this.twilioSender);
+        SmsRequest smsRequest = new SmsRequest(phoneNumber, occasion.getOccasionName()+ ": sent at " + LocalDateTime.now().toString());
         smsScheduler.setOccasion(occasion);
         smsScheduler.setSmsRequest(smsRequest);
-        smsScheduler.sendSms();
 
+        smsSchedulerRepository.save(smsScheduler);
+        SmsScheduler smsScheduler1 = smsSchedulerRepository.findById(occasion.getId()).get();
+        System.out.println(smsScheduler1.getOccasion().getId());
+
+        schedulerController.startSchedule(smsSchedulerRepository.findById(occasion.getId()).get());
     }
 
     public void removeOccasion(Long occasionID) {
+        schedulerController.stopSchedule(smsSchedulerRepository.findById(occasionID).get());
         occasionRepository.delete(getOccasionByOccasionId(occasionID));
     }
 

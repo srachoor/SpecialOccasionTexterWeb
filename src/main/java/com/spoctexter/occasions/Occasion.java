@@ -1,7 +1,10 @@
 package com.spoctexter.occasions;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.friends.Friend;
+import com.spoctexter.twilio.SmsScheduler;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -38,6 +41,14 @@ public class Occasion {
             )
     )
     Friend friend;
+
+    @JsonBackReference
+    @OneToOne(
+            mappedBy = "occasion",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    private SmsScheduler smsScheduler;
 
     public Occasion(String occasionName, LocalDate occasionDate) {
         this.occasionName = occasionName;
