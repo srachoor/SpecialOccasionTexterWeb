@@ -1,4 +1,4 @@
-package com.spoctexter.UserProfileLayer;
+package com.spoctexter.userProfile;
 
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

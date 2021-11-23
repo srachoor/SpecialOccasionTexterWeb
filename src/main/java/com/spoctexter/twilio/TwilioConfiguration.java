@@ -1,4 +1,4 @@
-package com.spoctexter.twilioAPI;
+package com.spoctexter.twilio;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

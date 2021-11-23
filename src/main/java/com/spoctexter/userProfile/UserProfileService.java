@@ -1,4 +1,4 @@
-package com.spoctexter.UserProfileLayer;
+package com.spoctexter.userProfile;
 
 import com.spoctexter.exception.NamingConflictException;
 import com.spoctexter.exception.NotFoundException;

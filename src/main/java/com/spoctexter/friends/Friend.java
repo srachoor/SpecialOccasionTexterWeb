@@ -1,8 +1,8 @@
 package com.spoctexter.friends;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.spoctexter.Occasions.Occasion;
-import com.spoctexter.UserAccountLayer.UserAccount;
+import com.spoctexter.occasions.Occasion;
+import com.spoctexter.userAccount.UserAccount;
 
 import javax.persistence.*;
 import java.time.LocalDate;

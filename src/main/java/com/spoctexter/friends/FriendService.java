@@ -1,7 +1,8 @@
 package com.spoctexter.friends;
 
-import com.spoctexter.UserAccountLayer.UserAccount;
-import com.spoctexter.UserAccountLayer.UserAccountRepository;
+import com.spoctexter.userAccount.UserAccount;
+import com.spoctexter.userAccount.UserAccountRepository;
+import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NamingConflictException;
 import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.inputvalidation.InputValidation;
@@ -31,6 +32,10 @@ public class FriendService {
         friend.setFriendId(uuid);
 
         Friend conflictFriend = inputValidator.checkFriendConflict(userAccount,friend,this.friendRepository);
+
+        if(!inputValidator.isValidPhone(friend.getFriendPhoneNumber())) {
+            throw new BadInputException(friend.getFriendPhoneNumber() + " is not a valid phone number.");
+        }
 
         if(conflictFriend == null) {
             friend.setUserAccount(userAccount);
@@ -70,8 +75,12 @@ public class FriendService {
     @Transactional
     public void updateFriendPhoneNumber(String newPhoneNumber, UUID friendId) {
         Friend friend = inputValidator.checkFriend(friendId, this.friendRepository);
-        friend.setFriendPhoneNumber(newPhoneNumber);
-        friendRepository.save(friend);
+        if(inputValidator.isValidPhone(newPhoneNumber)){
+            friend.setFriendPhoneNumber(newPhoneNumber);
+            friendRepository.save(friend);
+        } else {
+            throw new BadInputException(newPhoneNumber + " is not a valid phone number.");
+        }
     }
 
     @Transactional
@@ -99,13 +108,13 @@ public class FriendService {
         return inputValidator.checkFriend(friendId, this.friendRepository);
     }
 
-    public List<Friend> getFriendsByUser(UUID userProfileId) {
+    public List<Friend> getFriendsByUser(String userName) {
             UserAccount userAccount = this.userAccountRepository
-                    .findById(userProfileId)
+                    .findUserAccountByUserName(userName)
                     .orElseThrow(
                             () -> {
                                 NotFoundException notFoundException = new NotFoundException(
-                                        "User with id " + userProfileId + " not found");
+                                        "User with id " + userName + " not found");
                                 return notFoundException;
                             }
                     );

@@ -1,4 +1,4 @@
-package com.spoctexter.twilioAPI;
+package com.spoctexter.twilio;
 
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;

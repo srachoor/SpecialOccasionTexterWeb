@@ -1,4 +1,4 @@
-package com.spoctexter.twilioAPI;
+package com.spoctexter.twilio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

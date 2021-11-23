@@ -1,9 +1,9 @@
 package com.spoctexter.inputvalidation;
 
-import com.spoctexter.UserAccountLayer.UserAccount;
-import com.spoctexter.UserAccountLayer.UserAccountRepository;
-import com.spoctexter.UserProfileLayer.UserProfile;
-import com.spoctexter.UserProfileLayer.UserRepository;
+import com.spoctexter.userAccount.UserAccount;
+import com.spoctexter.userAccount.UserAccountRepository;
+import com.spoctexter.userProfile.UserProfile;
+import com.spoctexter.userProfile.UserRepository;
 import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.friends.Friend;

@@ -1,7 +1,7 @@
-package com.spoctexter.UserAccountLayer;
+package com.spoctexter.userAccount;
 
 
-import com.spoctexter.UserProfileLayer.UserRepository;
+import com.spoctexter.userProfile.UserRepository;
 import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NamingConflictException;
 import com.spoctexter.inputvalidation.InputValidation;

@@ -1,7 +1,7 @@
-package com.spoctexter.UserAccountLayer;
+package com.spoctexter.userAccount;
 
-import com.spoctexter.UserProfileLayer.UserProfile;
-import com.spoctexter.UserProfileLayer.UserProfileService;
+import com.spoctexter.userProfile.UserProfile;
+import com.spoctexter.userProfile.UserProfileService;
 import com.spoctexter.exception.NamingConflictException;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

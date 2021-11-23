@@ -1,10 +1,10 @@
-package com.spoctexter.Occasions;
+package com.spoctexter.occasions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.friends.Friend;
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity (name = "Occasion")

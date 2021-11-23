@@ -1,4 +1,4 @@
-package com.spoctexter.twilioAPI;
+package com.spoctexter.twilio;
 
 import com.twilio.Twilio;
 import lombok.extern.slf4j.Slf4j;

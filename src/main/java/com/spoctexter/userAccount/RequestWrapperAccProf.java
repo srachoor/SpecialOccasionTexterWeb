@@ -1,6 +1,6 @@
-package com.spoctexter.UserAccountLayer;
+package com.spoctexter.userAccount;
 
-import com.spoctexter.UserProfileLayer.UserProfile;
+import com.spoctexter.userProfile.UserProfile;
 
 @Deprecated
 public class RequestWrapperAccProf {

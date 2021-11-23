@@ -1,4 +1,4 @@
-package com.spoctexter.twilioAPI;
+package com.spoctexter.twilio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

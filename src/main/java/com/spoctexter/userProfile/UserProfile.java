@@ -1,8 +1,8 @@
-package com.spoctexter.UserProfileLayer;
+package com.spoctexter.userProfile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.spoctexter.UserAccountLayer.UserAccount;
+import com.spoctexter.userAccount.UserAccount;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;

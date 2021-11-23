@@ -1,9 +1,9 @@
-package com.spoctexter.UserAccountLayer;
+package com.spoctexter.userAccount;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.friends.Friend;
-import com.spoctexter.UserProfileLayer.UserProfile;
+import com.spoctexter.userProfile.UserProfile;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;

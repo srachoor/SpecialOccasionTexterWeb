@@ -1,12 +1,11 @@
 package com.spoctexter.friends;
 
-import com.spoctexter.UserAccountLayer.UserAccount;
-import com.spoctexter.UserAccountLayer.UserAccountService;
+import com.spoctexter.userAccount.UserAccount;
+import com.spoctexter.userAccount.UserAccountService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,9 +40,9 @@ public class FriendController {
 
     @GetMapping(path = "all")
     public List <Friend> getFriendsByUser(
-            @RequestParam (name = "userProfileId") UUID userProfileId
+            @RequestParam (name = "userName") String userName
     ){
-        return friendService.getFriendsByUser(userProfileId);
+        return friendService.getFriendsByUser(userName);
     }
 
     @DeleteMapping(path="delete")
@@ -55,8 +54,8 @@ public class FriendController {
 
     @PutMapping(path="update")
     public void updateFriend(
-            @RequestParam (name="newFriendPhoneNumber") String newFriendPhoneNumber,
             @RequestParam (name="newFriendFirstName") String newFriendFirstName,
+            @RequestParam (name="newFriendPhoneNumber") String newFriendPhoneNumber,
             @RequestParam (name="newFriendLastName") String newFriendLastName,
             @RequestParam (name="newFriendDOB") String newFriendDOB,
             @NotNull @RequestParam(name = "friendId") UUID friendId

@@ -1,6 +1,5 @@
-package com.spoctexter.UserAccountLayer;
+package com.spoctexter.userAccount;
 
-import com.spoctexter.UserProfileLayer.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

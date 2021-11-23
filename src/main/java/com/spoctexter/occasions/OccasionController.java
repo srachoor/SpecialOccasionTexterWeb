@@ -1,4 +1,4 @@
-package com.spoctexter.Occasions;
+package com.spoctexter.occasions;
 
 import com.spoctexter.friends.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
