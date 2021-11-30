@@ -57,10 +57,11 @@ public class OccasionService {
         System.out.println(smsScheduler1.getOccasion().getId());
 
         schedulerController.startSchedule(smsSchedulerRepository.findById(occasion.getId()).get());
+
     }
 
     public void removeOccasion(Long occasionID) {
-        schedulerController.stopSchedule(smsSchedulerRepository.findById(occasionID).get());
+//        schedulerController.stopSchedule(smsSchedulerRepository.findById(occasionID).get());
         occasionRepository.delete(getOccasionByOccasionId(occasionID));
     }
 
