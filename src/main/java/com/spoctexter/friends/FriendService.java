@@ -1,5 +1,7 @@
 package com.spoctexter.friends;
 
+import com.spoctexter.occasions.Occasion;
+import com.spoctexter.occasions.OccasionService;
 import com.spoctexter.userAccount.UserAccount;
 import com.spoctexter.userAccount.UserAccountRepository;
 import com.spoctexter.exception.BadInputException;
@@ -20,11 +22,13 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final UserAccountRepository userAccountRepository;
     private final InputValidation inputValidator = new InputValidation();
+    private final OccasionService occasionService;
 
     @Autowired
-    public FriendService(FriendRepository friendRepository, UserAccountRepository userAccountRepository) {
+    public FriendService(FriendRepository friendRepository, UserAccountRepository userAccountRepository, OccasionService occasionService) {
         this.friendRepository = friendRepository;
         this.userAccountRepository = userAccountRepository;
+        this.occasionService = occasionService;
     }
 
     public void addNewFriend(UserAccount userAccount, Friend friend) {
@@ -40,6 +44,8 @@ public class FriendService {
         if(conflictFriend == null) {
             friend.setUserAccount(userAccount);
             friendRepository.save(friend);
+            Occasion birthday = new Occasion("Birthday", friend.getFriendDOB());
+            occasionService.addOccasion(friend.getFriendId(),birthday);
         } else {
             throw new NamingConflictException("This phone number is already associated with another friend.");
         }
@@ -119,5 +125,18 @@ public class FriendService {
                             }
                     );
             return userAccount.getFriends();
+    }
+
+    public List<Friend> getFriendsByUserId(UUID userId) {
+        UserAccount userAccount = this.userAccountRepository
+                .findById(userId)
+                .orElseThrow(
+                        () -> {
+                            NotFoundException notFoundException = new NotFoundException(
+                                    "User not found");
+                            return notFoundException;
+                        }
+                );
+        return userAccount.getFriends();
     }
 }

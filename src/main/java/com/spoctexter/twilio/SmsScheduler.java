@@ -1,74 +1,79 @@
 package com.spoctexter.twilio;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.occasions.Occasion;
+import com.spoctexter.occasions.OccasionRepository;
+import com.spoctexter.texts.Text;
+import com.spoctexter.texts.TextService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity (name = "SmsScheduler")
-@Table
+@Configuration
 @EnableScheduling
 public class SmsScheduler {
 
-    @Id
-    @Column(unique = true, updatable = false, nullable = false)
-    private long id;
+    private final OccasionRepository occasionRepository;
+    private final TwilioSender twilioSender;
+    private final TextService textService;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JsonManagedReference
-    @OneToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    @JoinColumn(name = "id")
-    @MapsId
-    private Occasion occasion;
-
-    @Transient
-    private SmsRequest smsRequest;
-
-    @Transient
-    @JsonIgnore
-    private TwilioSender twilioSender;
-
-    public SmsScheduler(TwilioSender twilioSender) {
+    @Autowired
+    public SmsScheduler(OccasionRepository occasionRepository,
+                        TwilioSender twilioSender,
+                        TextService textService) {
+        this.occasionRepository = occasionRepository;
         this.twilioSender = twilioSender;
+        this.textService = textService;
     }
 
-    public SmsScheduler() {
-    }
+    @Scheduled(cron= "00 00 09 * * ?")
+    public void checkOccasions() {
+        LocalDate today = LocalDate.now();
+        int month = today.getMonthValue();
+        int day = today.getDayOfMonth();
+        List<Occasion> todayOccasions = occasionRepository.findOccasionsByDate(month, day);
 
-    @Scheduled(cron= "00 23 13 23 11 ?")
-    public void sendSms() {
-        twilioSender.sendSms(smsRequest);
-    }
+        outerLoop:
+        for (Occasion occasion : todayOccasions) {
 
-    public Occasion getOccasion() {
-        return occasion;
-    }
+            Boolean wasSent = false;
+            List<Text> sentTexts = occasion.getTexts();
 
-    public void setOccasion(Occasion occasion) {
-        this.occasion = occasion;
-    }
+            innerLoop:
+            for (Text sentText : sentTexts) {
+                if (sentText.getSentTime().getDayOfMonth() == day &&
+                        sentText.getSentTime().getMonthValue() == month){
+                    wasSent = true;
+                    break innerLoop;
+                }
+            }
 
-    public SmsRequest getSmsRequest() {
-        return smsRequest;
-    }
+            if(wasSent) {
+                continue;
+            } else {
 
-    public void setSmsRequest(SmsRequest smsRequest) {
-        this.smsRequest = smsRequest;
-    }
+                String message = "Reminder: Today is " + occasion
+                        .getFriend().getFriendFirstName() + " " + occasion
+                        .getFriend().getFriendLastName() + "'s " + occasion.getOccasionName() +
+                        ". Make sure you text them at " + occasion.getFriend().getFriendPhoneNumber() + ".";
 
-    @Override
-    public String toString() {
-        return "SmsScheduler{" +
-                "id=" + id +
-                ", occasion=" + occasion +
-                ", smsRequest=" + smsRequest +
-                '}';
+                String phoneNumber = occasion
+                        .getFriend()
+                        .getUserAccount()
+                        .getUserProfile()
+                        .getPhoneNumber();
+
+                Text newText = new Text(LocalDateTime.now(),message,phoneNumber);
+
+                SmsRequest smsRequest = new SmsRequest(phoneNumber, message);
+                twilioSender.sendSms(smsRequest);
+
+                textService.addText(occasion.getId(),newText);
+            }
+        }
     }
 }

@@ -1,8 +1,11 @@
-package com.spoctexter.twilio;
+package com.spoctexter.texts;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SmsSchedulerRepository extends JpaRepository<SmsScheduler, Long> {
+public interface TextRepository extends JpaRepository<Text, Long> {
+
+
+
 }

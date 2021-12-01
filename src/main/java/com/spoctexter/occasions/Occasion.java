@@ -3,10 +3,13 @@ package com.spoctexter.occasions;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.friends.Friend;
+import com.spoctexter.texts.Text;
 import com.spoctexter.twilio.SmsScheduler;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -42,13 +45,13 @@ public class Occasion {
     )
     Friend friend;
 
-    @JsonBackReference
-    @OneToOne(
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(
             mappedBy = "occasion",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
-    private SmsScheduler smsScheduler;
+    private List<Text> texts = new ArrayList<>();
 
     public Occasion(String occasionName, LocalDate occasionDate) {
         this.occasionName = occasionName;
@@ -95,6 +98,24 @@ public class Occasion {
 
     public void setOccasionDate(LocalDate occasionDate) {
         this.occasionDate = occasionDate;
+    }
+
+    public List<Text> getTexts() {
+        return texts;
+    }
+
+    public void addText(Text text) {
+        if (!this.texts.contains(text)) {
+            this.texts.add(text);
+            text.setOccasion(this);
+        }
+    }
+
+    public void removeText(Text text) {
+        if (this.texts.contains(text)) {
+            this.texts.remove(text);
+            text.setOccasion(null);
+        }
     }
 
     @Override
