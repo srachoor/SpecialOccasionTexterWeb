@@ -35,20 +35,26 @@ public class SmsScheduler {
         LocalDate today = LocalDate.now();
         int month = today.getMonthValue();
         int day = today.getDayOfMonth();
+
+        System.out.println("month: " + month);
+        System.out.println("day: "+  day);
         List<Occasion> todayOccasions = occasionRepository.findOccasionsByDate(month, day);
 
-        outerLoop:
         for (Occasion occasion : todayOccasions) {
 
             Boolean wasSent = false;
             List<Text> sentTexts = occasion.getTexts();
 
-            innerLoop:
-            for (Text sentText : sentTexts) {
-                if (sentText.getSentTime().getDayOfMonth() == day &&
-                        sentText.getSentTime().getMonthValue() == month){
-                    wasSent = true;
-                    break innerLoop;
+            if(sentTexts.isEmpty()) {
+                System.out.println("SentTexts is empty.");
+            } else {
+                innerLoop:
+                for (Text sentText : sentTexts) {
+                    if (sentText.getSentTime().getDayOfMonth() == day &&
+                            sentText.getSentTime().getMonthValue() == month) {
+                        wasSent = true;
+                        break innerLoop;
+                    }
                 }
             }
 

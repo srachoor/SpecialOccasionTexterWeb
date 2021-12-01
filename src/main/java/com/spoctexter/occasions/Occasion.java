@@ -47,6 +47,7 @@ public class Occasion {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(
+            fetch = FetchType.EAGER,
             mappedBy = "occasion",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE}

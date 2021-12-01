@@ -45,6 +45,9 @@ public class Text {
     )
     Occasion occasion;
 
+    public Text() {
+    }
+
     public Text(LocalDateTime sentTime, String smsMessage, String sentPhone) {
         this.sentTime = sentTime;
         this.smsMessage = smsMessage;
