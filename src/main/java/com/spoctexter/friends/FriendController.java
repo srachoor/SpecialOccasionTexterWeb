@@ -64,6 +64,4 @@ public class FriendController {
         friendService.updateFriend(newFriendPhoneNumber, newFriendFirstName, newFriendLastName, newFriendDOB, friendId);
     }
 
-    //Will want to figure out how to update multiple friends for a given user
-
 }

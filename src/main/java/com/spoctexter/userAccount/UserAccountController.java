@@ -71,7 +71,7 @@ public class UserAccountController {
 
     @GetMapping(path = "pwusername={userName}")
     public Boolean validatePassword (
-            @NotNull @RequestParam String password,
+            @NotNull @RequestParam (name = "password") String password,
             @NotNull @PathVariable("userName") String userName
     ) {
         return userAccountService.validatePassword(userName, password);
@@ -88,11 +88,10 @@ public class UserAccountController {
 
     @PutMapping(path = "pwchange={userName}")
     public void changePassword (
-            @NotNull @RequestBody Map<String, String> json,
+            @NotNull @RequestParam(name = "currentPassword") String currentPassword,
+            @NotNull @RequestParam(name = "newPassword") String newPassword,
             @NotNull @PathVariable(name = "userName") String userName
     ) {
-        String currentPassword = json.get("currentPassword");
-        String newPassword = json.get("newPassword");
         if (userAccountService.validatePassword(userName,currentPassword)){
             userAccountService.updatePassword(userName,newPassword);
         }

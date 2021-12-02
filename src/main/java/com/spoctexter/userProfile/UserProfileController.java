@@ -83,9 +83,10 @@ public class UserProfileController {
             @RequestParam (name = "newPhoneNumber") String newPhoneNumber,
             @RequestParam (name = "newFirstName") String newFirstName,
             @RequestParam (name = "newLastName") String newLastName,
-            @RequestParam (name = "userProfileId") UUID userProfileId
+            @RequestParam (name = "newUserName") String newUserName,
+            @RequestParam (name = "currentEmail") String currentEmail
     ) {
-        userService.updateUserProfile(newEmail, newPhoneNumber, newFirstName, newLastName, userProfileId);
+        userService.updateUserProfile(newEmail, newPhoneNumber, newFirstName, newLastName, newUserName, currentEmail);
     }
 
 

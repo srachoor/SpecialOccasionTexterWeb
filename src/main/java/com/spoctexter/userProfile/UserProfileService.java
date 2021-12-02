@@ -3,6 +3,7 @@ package com.spoctexter.userProfile;
 import com.spoctexter.exception.NamingConflictException;
 import com.spoctexter.exception.NotFoundException;
 import com.spoctexter.inputvalidation.InputValidation;
+import com.spoctexter.userAccount.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +16,12 @@ import java.util.UUID;
 public class UserProfileService {
 
     private final UserRepository userRepository;
+    private final UserAccountService userAccountService;
 
     @Autowired
-    public UserProfileService(UserRepository userRepository) {
+    public UserProfileService(UserRepository userRepository, UserAccountService userAccountService) {
         this.userRepository = userRepository;
+        this.userAccountService = userAccountService;
     }
 
     private final InputValidation inputValidator = new InputValidation();
@@ -133,21 +136,32 @@ public class UserProfileService {
 
     }
 
-    public void updateUserProfile(String newEmail, String newPhoneNumber, String newFirstName, String newLastName, UUID userProfileId) {
+    @Transactional
+    public void updateUserProfileUserName(String email, String newUserName) {
 
-        UserProfile userProfile = this.getUserProfileByID(userProfileId);
+        UserProfile currentUser = inputValidator.checkEmail(email,userRepository);
+        userAccountService.updateUserName(currentUser.getUserAccount().getUserName(),newUserName);
 
-        if(newEmail != "") {
+    }
+
+    public void updateUserProfile(String newEmail, String newPhoneNumber, String newFirstName, String newLastName, String newUserName, String currentEmail) {
+
+        UserProfile userProfile = this.getUserProfileByEmail(currentEmail);
+
+        if(!newEmail.equals("")) {
             this.updateUserProfileEmail(userProfile.getEmail(), newEmail);
         }
-        if(newPhoneNumber != "") {
+        if(!newPhoneNumber.equals("")) {
             this.updateUserProfilePhoneNumber(userProfile.getPhoneNumber(),newPhoneNumber);
         }
-        if(newFirstName != "") {
+        if(!newFirstName.equals("")) {
             this.updateUserProfileFirstName(userProfile.getEmail(), newFirstName);
         }
-        if(newLastName != "") {
+        if(!newLastName.equals("")) {
             this.updateUserProfileLastName(userProfile.getEmail(),newLastName);
+        }
+        if(!newUserName.equals("")) {
+            this.updateUserProfileUserName(userProfile.getEmail(), newUserName);
         }
     }
 }

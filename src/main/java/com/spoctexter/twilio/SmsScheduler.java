@@ -30,7 +30,7 @@ public class SmsScheduler {
         this.textService = textService;
     }
 
-    @Scheduled(cron= "00 00 09 * * ?")
+    @Scheduled(cron= "0 0/30 8-11 * * *")
     public void checkOccasions() {
         LocalDate today = LocalDate.now();
         int month = today.getMonthValue();

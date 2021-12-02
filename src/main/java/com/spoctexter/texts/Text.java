@@ -1,7 +1,6 @@
 package com.spoctexter.texts;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.spoctexter.friends.Friend;
 import com.spoctexter.occasions.Occasion;
 import lombok.Data;
 
