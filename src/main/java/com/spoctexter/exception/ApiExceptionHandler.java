@@ -62,5 +62,21 @@ public class ApiExceptionHandler {
                 HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(value = ForbiddenAccessException.class)
+    public ResponseEntity<Object> handleForbiddenAccessException(
+            ForbiddenAccessException e
+    ) {
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                e,
+                HttpStatus.FORBIDDEN,
+                ZonedDateTime.now()
+        );
+
+        return new ResponseEntity<>(
+                apiException,
+                HttpStatus.FORBIDDEN);
+    }
 
 }

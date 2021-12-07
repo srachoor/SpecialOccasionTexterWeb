@@ -12,7 +12,7 @@ import java.util.UUID;
 @Transactional
 public interface UserAccountRepository extends JpaRepository<UserAccount, UUID> {
 
-    @Query(value = "SELECT * FROM user_account WHERE user_name = ?1", nativeQuery = true)  // native query example -- PSQL
-    Optional<UserAccount> findUserAccountByUserName(String userName);
+    @Query(value = "SELECT * FROM user_account WHERE username = ?1", nativeQuery = true)  // native query example -- PSQL
+    Optional<UserAccount> findUserAccountByUserName(String username);
 
 }

@@ -140,7 +140,7 @@ public class UserProfileService {
     public void updateUserProfileUserName(String email, String newUserName) {
 
         UserProfile currentUser = inputValidator.checkEmail(email,userRepository);
-        userAccountService.updateUserName(currentUser.getUserAccount().getUserName(),newUserName);
+        userAccountService.updateUserName(currentUser.getUserAccount().getUsername(),newUserName);
 
     }
 
