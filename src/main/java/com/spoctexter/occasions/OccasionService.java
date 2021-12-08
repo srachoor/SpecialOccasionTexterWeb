@@ -57,16 +57,22 @@ public class OccasionService {
     }
 
     @Transactional
-    public void updateOccasion(Long occasionId, String occasionName, String occasionDate) {
+    public void updateOccasion(Long occasionId, String occasionName, LocalDate occasionDate) {
         Occasion occasion = getOccasionByOccasionId(occasionId);
         if(!occasionName.equals("")) {
             occasion.setOccasionName(occasionName);
         }
         if(!occasionDate.equals("")){
-            occasion.setOccasionDate(LocalDate.parse(occasionDate));
+            occasion.setOccasionDate(occasionDate);
         }
         else {
             throw new BadInputException("No inputs for changing the occasion were provided");
         }
+        occasionRepository.save(occasion);
     }
+
+    public Occasion findFriendBirthday(UUID friendId) {
+        return occasionRepository.findBirthdayByFriendId(friendId);
+    }
+
 }

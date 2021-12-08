@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -81,7 +82,7 @@ public class OccasionController {
             Principal principal
     ) {
         if (principal.getName().equals(occasionService.getOccasionByOccasionId(occasionId).getFriend().getUserAccount().getUsername())) {
-            occasionService.updateOccasion(occasionId, occasionName, occasionDate);
+            occasionService.updateOccasion(occasionId, occasionName, LocalDate.parse(occasionDate));
         } else {
             throw new ForbiddenAccessException("You do not have access to this resource.");
         }

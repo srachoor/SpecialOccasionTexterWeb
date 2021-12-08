@@ -101,6 +101,7 @@ public class UserProfileController {
         }
     }
 
+    @CrossOrigin
     @DeleteMapping(path = "email={email}")
     public void deleteUserProfileByEmail(@NotNull @PathVariable("email") String email, Principal principal) {
         if(principal.getName().equals(userService.getUserProfileByEmail(email).getUserAccount().getUsername())) {

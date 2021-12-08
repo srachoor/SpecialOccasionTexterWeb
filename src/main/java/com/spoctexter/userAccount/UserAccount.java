@@ -3,7 +3,6 @@ package com.spoctexter.userAccount;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spoctexter.friends.Friend;
-import com.spoctexter.security.ApplicationUserRole;
 import com.spoctexter.security.Role;
 import com.spoctexter.userProfile.UserProfile;
 import org.springframework.security.core.GrantedAuthority;
@@ -180,6 +179,26 @@ public class UserAccount {
 
     public List<Friend> getFriends() {
         return friends;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        isAccountNonExpired = accountNonExpired;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        isCredentialsNonExpired = credentialsNonExpired;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     public void addFriend(Friend friend) {

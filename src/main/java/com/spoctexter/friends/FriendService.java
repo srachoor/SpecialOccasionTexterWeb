@@ -108,6 +108,10 @@ public class FriendService {
         Friend friend = inputValidator.checkFriend(friendId, this.friendRepository);
         friend.setFriendDOB(newFriendDOB);
         friendRepository.save(friend);
+
+        Long birthdayId = occasionService.findFriendBirthday(friendId).getId();
+        occasionService.updateOccasion(birthdayId, "", newFriendDOB);
+
     }
 
     public Friend getFriendById(UUID friendId) {
