@@ -1,11 +1,14 @@
 package com.spoctexter.occasions;
 
+import com.spoctexter.exception.ForbiddenAccessException;
 import com.spoctexter.friends.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,40 +28,63 @@ public class OccasionController {
     @PostMapping
     public void addOccasion(
             @NotNull @RequestParam(name = "friendId") UUID friendId,
-            @NotNull @RequestBody @Valid Occasion occasion
+            @NotNull @RequestBody @Valid Occasion occasion,
+            Principal principal
     ) {
-        occasionService.addOccasion(friendId, occasion);
+        if(principal.getName().equals(friendService.getFriendById(friendId).getUserAccount().getUsername())) {
+            occasionService.addOccasion(friendId, occasion);
+        } else {
+            throw new ForbiddenAccessException("You do not have access to this resource.");
+        }
     }
 
     @GetMapping
     public Occasion getOccasionByOccasionId(
-            @NotNull @RequestParam(name = "occasionId") Long occasionId
+            @NotNull @RequestParam(name = "occasionId") Long occasionId,
+            Principal principal
     ) {
-        return occasionService.getOccasionByOccasionId(occasionId);
+        if (principal.getName().equals(occasionService.getOccasionByOccasionId(occasionId).getFriend().getUserAccount().getUsername())) {
+            return occasionService.getOccasionByOccasionId(occasionId);
+        } else {
+            throw new ForbiddenAccessException("You do not have access to this resource.");
+        }
     }
 
     @GetMapping (path = "all")
     public List<Occasion> getOccasionsByFriendId(
-            @NotNull @RequestParam(name = "friendId") UUID friendId
+            @NotNull @RequestParam(name = "friendId") UUID friendId,
+            Principal principal
     ) {
-        return occasionService.getOccasionsByFriendId(friendId);
+        if(principal.getName().equals(friendService.getFriendById(friendId).getUserAccount().getUsername())) {
+            return occasionService.getOccasionsByFriendId(friendId);
+        } else {
+            throw new ForbiddenAccessException("You do not have access to this resource.");
+        }
     }
 
     @DeleteMapping
     public void removeOccasion(
-            @NotNull @RequestParam (name = "occasionId") Long occasionId
+            @NotNull @RequestParam (name = "occasionId") Long occasionId,
+            Principal principal
     ) {
-        occasionService.removeOccasion(occasionId);
+        if (principal.getName().equals(occasionService.getOccasionByOccasionId(occasionId).getFriend().getUserAccount().getUsername())) {
+            occasionService.removeOccasion(occasionId);
+        } else {
+            throw new ForbiddenAccessException("You do not have access to this resource.");
+        }
     }
 
     @PutMapping
     public void updateOccasion(
             @NotNull @RequestParam (name = "occasionId") Long occasionId,
             @RequestParam (name = "occasionName") String occasionName,
-            @RequestParam (name = "occasionDate") String occasionDate
+            @RequestParam (name = "occasionDate") String occasionDate,
+            Principal principal
     ) {
-        occasionService.updateOccasion(occasionId, occasionName, occasionDate);
+        if (principal.getName().equals(occasionService.getOccasionByOccasionId(occasionId).getFriend().getUserAccount().getUsername())) {
+            occasionService.updateOccasion(occasionId, occasionName, LocalDate.parse(occasionDate));
+        } else {
+            throw new ForbiddenAccessException("You do not have access to this resource.");
+        }
     }
-
-    //Need to add putMapping for editing an occasion (need to add the occasion date field as well)
 }
