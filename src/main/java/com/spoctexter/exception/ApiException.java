@@ -1,5 +1,6 @@
 package com.spoctexter.exception;
 
+import lombok.var;
 import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;

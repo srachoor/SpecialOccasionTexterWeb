@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,8 +53,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
         try {
 
-            Jws<Claims> claimsJws = Jwts.parser()
-                    .setSigningKey(secretKey)
+            Jws<Claims> claimsJws = Jwts.parserBuilder()
+                    .setSigningKey(secretKey).build()
                     .parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();
