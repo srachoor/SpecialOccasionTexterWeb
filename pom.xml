@@ -96,6 +96,11 @@
             <version>0.11.2</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-secretsmanager</artifactId>
+            <version>1.11.355 </version>
+        </dependency>
 
     </dependencies>
 
@@ -128,9 +133,9 @@
             </properties>
         </profile>
         <profile>
-            <id>default</id>
+            <id>dev</id>
             <build>
-                <finalName>SpocTexter Default</finalName>
+                <finalName>SpocTexter Dev</finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
@@ -148,6 +153,11 @@
                     </plugin>
                 </plugins>
             </build>
+            <properties>
+                <spring.profiles.active>
+                    dev
+                </spring.profiles.active>
+            </properties>
         </profile>
 
     </profiles>
