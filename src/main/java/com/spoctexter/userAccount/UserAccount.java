@@ -61,6 +61,9 @@ public class UserAccount {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
+    @Column
+    private boolean hasTestedText = false;
+
     public UserAccount(UserProfile userProfile,
                        String username,
                        String password,
@@ -71,7 +74,7 @@ public class UserAccount {
                        boolean isCredentialsNonExpired,
                        boolean isEnabled) {
         this.userProfile = userProfile;
-        this.username = username;
+        this.username = username.toLowerCase();
         this.password = password;
         this.createdAt = createdAt;
         this.friends = friends;
@@ -79,6 +82,7 @@ public class UserAccount {
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
+        this.hasTestedText = false;
     }
 
     public UserAccount(String username,
@@ -89,7 +93,7 @@ public class UserAccount {
                        boolean isAccountNonLocked,
                        boolean isCredentialsNonExpired,
                        boolean isEnabled) {
-        this.username = username;
+        this.username = username.toLowerCase();
         this.password = password;
         this.createdAt = createdAt;
         this.friends = friends;
@@ -97,10 +101,11 @@ public class UserAccount {
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
+        this.hasTestedText = false;
     }
 
     public UserAccount(String username, String password, OffsetDateTime createdAt, UserProfile userProfile) {
-        this.username = username;
+        this.username = username.toLowerCase();
         this.password = password;
         this.createdAt = createdAt;
         this.userProfile = userProfile;
@@ -108,26 +113,29 @@ public class UserAccount {
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
+        this.hasTestedText = false;
     }
 //
     public UserAccount(String username, String password, OffsetDateTime createdAt) {
-        this.username = username;
+        this.username = username.toLowerCase();
         this.password = password;
         this.createdAt = createdAt;
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
+        this.hasTestedText = false;
     }
 
     public UserAccount(String username, String password) {
-        this.username = username;
+        this.username = username.toLowerCase();
         this.password = password;
         this.createdAt = OffsetDateTime.now();
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
+        this.hasTestedText = false;
     }
 
     public UserAccount() {
@@ -135,6 +143,7 @@ public class UserAccount {
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
         this.isEnabled = true;
+        this.hasTestedText = false;
     }
 
     public UUID getId() {
@@ -158,7 +167,7 @@ public class UserAccount {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase();
     }
 
     public String getPassword() {
@@ -175,6 +184,14 @@ public class UserAccount {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isHasTestedText() {
+        return hasTestedText;
+    }
+
+    public void setHasTestedText(boolean hasTestedText) {
+        this.hasTestedText = hasTestedText;
     }
 
     public List<Friend> getFriends() {

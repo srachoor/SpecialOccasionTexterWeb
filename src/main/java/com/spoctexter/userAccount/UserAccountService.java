@@ -1,6 +1,8 @@
 package com.spoctexter.userAccount;
 
 
+import com.spoctexter.twilio.SmsRequest;
+import com.spoctexter.twilio.TwilioSender;
 import com.spoctexter.userProfile.UserRepository;
 import com.spoctexter.exception.BadInputException;
 import com.spoctexter.exception.NamingConflictException;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
 
 @Service
@@ -22,6 +25,7 @@ public class UserAccountService implements UserDetailsService {
     private final UserRepository userProfileRepository;
     private final InputValidation inputValidator = new InputValidation();
     private final PasswordEncoder passwordEncoder;
+    private final TwilioSender twilioSender;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,10 +41,12 @@ public class UserAccountService implements UserDetailsService {
     @Autowired
     public UserAccountService(UserAccountRepository userAccountRepository,
                               UserRepository userProfileRepository,
-                              PasswordEncoder passwordEncoder) {
+                              PasswordEncoder passwordEncoder,
+                              TwilioSender twilioSender) {
         this.userAccountRepository = userAccountRepository;
         this.userProfileRepository = userProfileRepository;
         this.passwordEncoder = passwordEncoder;
+        this.twilioSender = twilioSender;
     }
 
     public void addNewUserAccount(UserAccount userAccount) {
@@ -81,6 +87,17 @@ public class UserAccountService implements UserDetailsService {
         UserAccount userAccount = getUserAccountByUserName(userName);
         userAccount.setPassword(newPassword);
         userAccountRepository.save(userAccount);
+    }
 
+    public void sendTestText(String userName, String message) throws Exception {
+        UserAccount userAccount = this.getUserAccountByUserName(userName);
+        if (userAccount.isHasTestedText() == false) {
+            SmsRequest smsRequest = new SmsRequest(userAccount.getUserProfile().getPhoneNumber(),message);
+            twilioSender.sendSms(smsRequest);
+            userAccount.setHasTestedText(true);
+            userAccountRepository.save(userAccount);
+        } else {
+            throw new Exception("Text test has already been sent.");
+        }
     }
 }

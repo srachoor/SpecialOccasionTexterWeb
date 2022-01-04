@@ -48,7 +48,7 @@ public class UserProfile {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
     }
@@ -57,7 +57,7 @@ public class UserProfile {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
         this.userAccount = userAccount;
@@ -67,7 +67,7 @@ public class UserProfile {
         this.userAccount = userAccount;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.phoneNumber = phoneNumber;
     }
 
@@ -103,7 +103,7 @@ public class UserProfile {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public String getPhoneNumber() {

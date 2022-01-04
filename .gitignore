@@ -61,3 +61,5 @@ build/
 *.yml
 */src/main/resources/application.properties
 *.properties
+*/src/main/resources/application-dev.properties
+*/src/main/resources/application-beanstalk.properties

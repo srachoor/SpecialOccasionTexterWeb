@@ -136,4 +136,14 @@ public class UserAccountController {
             userAccountService.updatePassword(userName,passwordEncoder.encode(newPassword));
         }
     }
+
+    @PostMapping(path = "testtext={userName}")
+    @PreAuthorize(value = "authentication.principal.equals(#userName)")
+    public void sendTestText (
+            @NotNull @RequestParam(name = "message") String message,
+            @NotNull @PathVariable(name = "userName") String userName
+    ) throws Exception {
+        userAccountService.sendTestText(userName, message);
+    }
+
 }

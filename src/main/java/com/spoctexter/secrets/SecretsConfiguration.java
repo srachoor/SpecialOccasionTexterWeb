@@ -3,6 +3,7 @@ package com.spoctexter.secrets;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -26,9 +27,13 @@ import com.amazonaws.services.secretsmanager.model.InvalidRequestException;
 import com.amazonaws.services.secretsmanager.model.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.env.Environment;
 
 @Configuration
 public class SecretsConfiguration {
+
+    @Resource
+    private Environment env;
 
     private static final Logger log = LoggerFactory.getLogger(SecretsConfiguration.class);
 
@@ -93,13 +98,15 @@ public class SecretsConfiguration {
 
     public JsonNode getSecrets() {
 
-        String secretName = "/spoctexter/sensitivekeys";
-        String region = "us-east-2";
+        String secretName = env.getProperty("aws.secretName");
+        String region = env.getProperty("aws.region");
+        String accessKey = env.getProperty("aws.accessKey");
+        String secretKey = env.getProperty("aws.secretKey");
 
         // Create a Secrets Manager client
         AWSSecretsManager client  = AWSSecretsManagerClientBuilder.standard()
                 .withRegion(region)
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("AKIAQAVICZ6IXNFY4LX3", "SOmkLLf6k/SNSuBvk01TQMgstyO1duDOtZi03NAK")))
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -136,7 +143,7 @@ public class SecretsConfiguration {
 //            System.out.println("Secrets json - "+secretsJson);
             return secretsJson;
         } catch (IOException e) {
-            log.error("Exception while retreiving secret values: " + e.getMessage());
+            log.error("Exception while retrieving secret values: " + e.getMessage());
         }
 
         return null;

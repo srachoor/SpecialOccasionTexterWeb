@@ -16,4 +16,5 @@ public interface OccasionRepository extends JpaRepository<Occasion, Long> {
 
     @Query(value = "SELECT * FROM occasion WHERE occasion_name = 'Birthday' AND friend_id = ?1 LIMIT 1", nativeQuery = true)
     Occasion findBirthdayByFriendId(UUID friendId);
+
 }
